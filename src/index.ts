@@ -7,11 +7,17 @@ document.body.appendChild(canvas)
 
 const ctx = canvas.getContext('2d')
 
+let g: game;
+if (ctx) {
+  g = new game(ctx)
+} else {
+  console.error('Canvas is null')
+}
+
 onload = () => {
-  if (ctx) {
-    const g: game = new game(ctx)
+  setInterval(() => {
+    g.update()
     g.draw()
-  } else {
-    console.error('Canvas is null')
-  }
+  } , 1000 / 60);
+
 }
