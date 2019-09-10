@@ -1,25 +1,19 @@
-import {InputKey, KeyCode} from './input'
+import { InputKey, KeyCode } from './input'
+import DM from './drawManager'
 
 export default class game {
-  private ctx: CanvasRenderingContext2D
   private x: number
   private y: number
 
   constructor(ctx: CanvasRenderingContext2D) {
-    this.ctx = ctx
-    this.x = 100;
-    this.y = 100;
+    DM.setCtx(ctx)
+    this.x = 100
+    this.y = 100
   }
 
   public draw() {
-    this.ctx.beginPath()
-    this.ctx.fillStyle = '#ffffff'
-    this.ctx.rect(0, 0, 800, 600)
-    this.ctx.fill()
-    this.ctx.beginPath()
-    this.ctx.fillStyle = '#abc'
-    this.ctx.rect(this.x, this.y, 200, 200)
-    this.ctx.fill()
+    DM.rect(0, 0, 800, 600, '#ffffff', true)
+    DM.rect(this.x, this.y, 200, 200, '#def', true)
   }
 
   public update() {
