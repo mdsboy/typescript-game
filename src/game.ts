@@ -1,33 +1,36 @@
+import Point from './point'
+
 import { InputKey, KeyCode } from './input'
 import DM from './drawManager'
 
-export default class game {
-  private x: number
-  private y: number
+export default class Game {
+  private pos: Point;
+  private speed: number;
 
   constructor(ctx: CanvasRenderingContext2D) {
     DM.setCtx(ctx)
-    this.x = 100
-    this.y = 100
+    this.pos = new Point(100, 100)
+    this.speed = 5;
   }
 
   public draw() {
-    DM.rect(0, 0, 800, 600, '#ffffff', true)
-    DM.rect(this.x, this.y, 200, 200, '#def', true)
+    DM.rect(Point.zero, 800, 600, '#ffffff', true)
+    DM.rect(this.pos, 200, 200, '#def', true)
+    DM.circle(this.pos, 30, '#000', true)
   }
 
   public update() {
     if (InputKey.isKeyDown(KeyCode.A)) {
-      this.x -= 1
+      this.pos.x -= this.speed
     }
     if (InputKey.isKeyDown(KeyCode.D)) {
-      this.x += 1
+      this.pos.x += this.speed
     }
     if (InputKey.isKeyDown(KeyCode.W)) {
-      this.y -= 1
+      this.pos.y -= this.speed
     }
     if (InputKey.isKeyDown(KeyCode.S)) {
-      this.y += 1
+      this.pos.y += this.speed
     }
   }
 }

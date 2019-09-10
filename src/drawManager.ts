@@ -1,3 +1,5 @@
+import Point from './point'
+
 export default class DrawManager {
   private static ctx: CanvasRenderingContext2D
 
@@ -6,27 +8,25 @@ export default class DrawManager {
   }
 
   public static rect(
-    x: number,
-    y: number,
+    p: Point,
     w: number,
     h: number,
     color: string,
     fill: Boolean
   ) {
     this.ctx.beginPath()
-    this.ctx.rect(x, y, w, h)
+    this.ctx.rect(p.x, p.y, w, h)
     this.draw(color, fill)
   }
 
   public static circle(
-    x: number,
-    y: number,
+    p: Point,
     r: number,
     color: string,
     fill: Boolean
   ) {
     this.ctx.beginPath()
-    this.ctx.arc(x, y, r, 0, Math.PI * 2, false)
+    this.ctx.arc(p.x, p.y, r, 0, Math.PI * 2, false)
     this.draw(color, fill)
   }
 

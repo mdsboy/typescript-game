@@ -1,4 +1,4 @@
-import game from './game'
+import Game from './game'
 
 const canvas = document.createElement('canvas')
 canvas.width = 800
@@ -7,9 +7,9 @@ document.body.appendChild(canvas)
 
 const ctx = canvas.getContext('2d')
 
-let g: game;
+let g: Game;
 if (ctx) {
-  g = new game(ctx)
+  g = new Game(ctx)
 } else {
   console.error('Canvas is null')
 }
