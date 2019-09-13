@@ -1,42 +1,42 @@
 import Point from './point'
 
 export default class DrawManager {
-  private static ctx: CanvasRenderingContext2D
-
-  public static setCtx(ctx: CanvasRenderingContext2D) {
-    this.ctx = ctx
-  }
-
   public static rect(
+    ctx: CanvasRenderingContext2D,
     p: Point,
     w: number,
     h: number,
     color: string,
     fill: Boolean
   ) {
-    this.ctx.beginPath()
-    this.ctx.rect(p.x, p.y, w, h)
-    this.draw(color, fill)
+    ctx.beginPath()
+    ctx.rect(p.x, p.y, w, h)
+    this.draw(ctx, color, fill)
   }
 
   public static circle(
+    ctx: CanvasRenderingContext2D,
     p: Point,
     r: number,
     color: string,
     fill: Boolean
   ) {
-    this.ctx.beginPath()
-    this.ctx.arc(p.x, p.y, r, 0, Math.PI * 2, false)
-    this.draw(color, fill)
+    ctx.beginPath()
+    ctx.arc(p.x, p.y, r, 0, Math.PI * 2, false)
+    this.draw(ctx, color, fill)
   }
 
-  private static draw(color: string, fill: Boolean) {
+  private static draw(
+    ctx: CanvasRenderingContext2D,
+    color: string,
+    fill: Boolean
+  ) {
     if (fill) {
-      this.ctx.fillStyle = color
-      this.ctx.fill()
+      ctx.fillStyle = color
+      ctx.fill()
     } else {
-      this.ctx.strokeStyle = color
-      this.ctx.stroke()
+      ctx.strokeStyle = color
+      ctx.stroke()
     }
   }
 }

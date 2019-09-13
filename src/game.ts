@@ -3,23 +3,24 @@ import Point from './point'
 import { InputKey, KeyCode } from './input'
 import DM from './drawManager'
 
-export default class Game {
-  private pos: Point;
-  private speed: number;
+import SceneBase from './sceneBase'
 
-  constructor(ctx: CanvasRenderingContext2D) {
-    DM.setCtx(ctx)
+export default class Game implements SceneBase {
+  private pos: Point
+  private speed: number
+
+  constructor() {
     this.pos = new Point(100, 100)
-    this.speed = 5;
+    this.speed = 5
   }
 
-  public draw() {
-    DM.rect(Point.zero, 800, 600, '#ffffff', true)
-    DM.rect(this.pos, 200, 200, '#def', true)
-    DM.circle(this.pos, 30, '#000', true)
+  public draw(ctx: CanvasRenderingContext2D) {
+    DM.rect(ctx, Point.zero, 800, 600, '#ffffff', true)
+    DM.rect(ctx, this.pos, 200, 200, '#def', true)
+    DM.circle(ctx, this.pos, 30, '#000', true)
   }
 
-  public update() {
+  public update(): SceneBase {
     if (InputKey.isKeyDown(KeyCode.A)) {
       this.pos.x -= this.speed
     }
@@ -32,5 +33,6 @@ export default class Game {
     if (InputKey.isKeyDown(KeyCode.S)) {
       this.pos.y += this.speed
     }
+    return this
   }
 }
