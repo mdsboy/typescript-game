@@ -1,16 +1,18 @@
 import SceneBase from './sceneBase'
+import DrawManager from './drawManager';
 
 export default class SceneManager {
   current: SceneBase
-  ctx: CanvasRenderingContext2D
+  dm: DrawManager
 
-  constructor(scene: SceneBase, ctx: CanvasRenderingContext2D) {
+  constructor(scene: SceneBase) {
     this.current = scene
-    this.ctx = ctx
+    this.dm = new DrawManager(800, 600)
   }
 
   public run(): void {
-    this.current.draw(this.ctx)
+    this.current.draw(this.dm)
     this.current = this.current.update()
+    requestAnimationFrame(() => this.run())
   }
 }

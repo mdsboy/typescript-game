@@ -1,7 +1,7 @@
 import Point from './point'
 
 import { InputKey, KeyCode } from './input'
-import DM from './drawManager'
+import DrawManager from './drawManager'
 
 import SceneBase from './sceneBase'
 
@@ -14,10 +14,10 @@ export default class Game implements SceneBase {
     this.speed = 5
   }
 
-  public draw(ctx: CanvasRenderingContext2D) {
-    DM.rect(ctx, Point.zero, 800, 600, '#ffffff', true)
-    DM.rect(ctx, this.pos, 200, 200, '#def', true)
-    DM.circle(ctx, this.pos, 30, '#000', true)
+  public draw(dm: DrawManager) {
+    dm.rect(Point.zero, 800, 600, '#ffffff', true)
+    dm.rect(this.pos, 200, 200, '#def', true)
+    dm.circle(this.pos, 30, '#000', true)
   }
 
   public update(): SceneBase {

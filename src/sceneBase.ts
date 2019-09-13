@@ -1,4 +1,6 @@
+import DrawManager from './drawManager'
+
 export default interface SceneBase {
-  draw(ctx: CanvasRenderingContext2D): void
+  draw(dm: DrawManager): void
   update(): SceneBase
 }

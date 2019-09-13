@@ -1,42 +1,48 @@
 import Point from './point'
 
 export default class DrawManager {
-  public static rect(
-    ctx: CanvasRenderingContext2D,
+  private ctx: CanvasRenderingContext2D
+
+  constructor(width: number, height: number) {
+    const canvas = document.createElement('canvas')
+    canvas.width = width
+    canvas.height = height
+    document.body.appendChild(canvas)
+
+    const ctx = canvas.getContext('2d')
+
+    if (ctx) {
+      this.ctx = ctx
+    } else {
+      console.error('Canvas is null')
+    }
+  }
+
+  public rect(
     p: Point,
     w: number,
     h: number,
     color: string,
     fill: Boolean
   ) {
-    ctx.beginPath()
-    ctx.rect(p.x, p.y, w, h)
-    this.draw(ctx, color, fill)
+    this.ctx.beginPath()
+    this.ctx.rect(p.x, p.y, w, h)
+    this.draw(color, fill)
   }
 
-  public static circle(
-    ctx: CanvasRenderingContext2D,
-    p: Point,
-    r: number,
-    color: string,
-    fill: Boolean
-  ) {
-    ctx.beginPath()
-    ctx.arc(p.x, p.y, r, 0, Math.PI * 2, false)
-    this.draw(ctx, color, fill)
+  public circle(p: Point, r: number, color: string, fill: Boolean) {
+    this.ctx.beginPath()
+    this.ctx.arc(p.x, p.y, r, 0, Math.PI * 2, false)
+    this.draw(color, fill)
   }
 
-  private static draw(
-    ctx: CanvasRenderingContext2D,
-    color: string,
-    fill: Boolean
-  ) {
+  private draw(color: string, fill: Boolean) {
     if (fill) {
-      ctx.fillStyle = color
-      ctx.fill()
+      this.ctx.fillStyle = color
+      this.ctx.fill()
     } else {
-      ctx.strokeStyle = color
-      ctx.stroke()
+      this.ctx.strokeStyle = color
+      this.ctx.stroke()
     }
   }
 }

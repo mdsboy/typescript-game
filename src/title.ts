@@ -1,3 +1,4 @@
+import DrawManager from './drawManager'
 import { InputKey, KeyCode } from './input'
 
 import SceneBase from './sceneBase'
@@ -7,7 +8,7 @@ export default class Title implements SceneBase {
   constructor() {
   }
 
-  public draw(_ctx: CanvasRenderingContext2D) {
+  public draw(_dm: DrawManager) {
   }
 
   public update(): SceneBase {
