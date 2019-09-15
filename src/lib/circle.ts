@@ -8,4 +8,8 @@ export default class Circle {
     this.pos = pos
     this.radius = radius
   }
+
+  public inPoint(pos: Point): boolean {
+    return this.pos.dist(pos) <= this.radius
+  }
 }

@@ -1,4 +1,5 @@
 import Point from './point'
+import { between } from './util'
 
 export default class Rect {
   public pos: Point
@@ -9,5 +10,12 @@ export default class Rect {
     this.pos = pos
     this.width = width
     this.height = height
+  }
+
+  public inPoint(pos: Point): boolean {
+    return (
+      between(this.pos.x, pos.x, this.pos.x + this.width) &&
+      between(this.pos.y, pos.y, this.pos.y + this.height)
+    )
   }
 }
