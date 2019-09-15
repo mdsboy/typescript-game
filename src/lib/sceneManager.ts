@@ -6,24 +6,23 @@ import Point from './point'
 
 export default class SceneManager {
   private current: SceneBase
-  private dm: DrawManager
   private screen: Rect
 
   constructor(readonly scene: SceneBase, width: number, height: number) {
+    DrawManager.init(width, height)
     this.current = scene
-    this.dm = new DrawManager(width, height)
     this.screen = new Rect(Point.zero, width, height)
   }
 
   public run(): void {
     this.clear()
-    this.current.draw(this.dm)
+    this.current.draw()
     this.current = this.current.update()
 
     requestAnimationFrame(() => this.run())
   }
 
   private clear(): void {
-    this.dm.rect(this.screen, '#ffffff', true)
+    DrawManager.rect(this.screen, '#ffffff', true)
   }
 }

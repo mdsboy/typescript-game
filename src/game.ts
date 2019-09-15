@@ -1,7 +1,7 @@
 import Point from './lib/point'
 
-import { InputKey, KeyCode } from './lib/input'
-import DrawManager from './lib/drawManager'
+import { InputKey, KeyCode } from './lib/inputKey'
+import dm from './lib/drawManager'
 
 import SceneBase from './lib/sceneBase'
 import Rect from './lib/rect'
@@ -20,7 +20,7 @@ export default class Game implements SceneBase {
     this.circle = new Circle(this.pos, 30)
   }
 
-  public draw(dm: DrawManager) {
+  public draw() {
     dm.rect(this.rect, '#def', true)
     dm.circle(this.circle, '#000', true)
     dm.line(new Point(50, 100), new Point(200, 300), 3, "#000")
