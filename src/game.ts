@@ -4,20 +4,25 @@ import { InputKey, KeyCode } from './lib/input'
 import DrawManager from './lib/drawManager'
 
 import SceneBase from './lib/sceneBase'
+import Rect from './lib/rect'
+import Circle from './lib/circle'
 
 export default class Game implements SceneBase {
   private pos: Point
   private speed: number
+  private rect: Rect
+  private circle: Circle
 
   constructor() {
     this.pos = new Point(100, 100)
     this.speed = 5
+    this.rect = new Rect(this.pos, 200, 200)
+    this.circle = new Circle(this.pos, 30)
   }
 
   public draw(dm: DrawManager) {
-    dm.rect(Point.zero, 800, 600, '#ffffff', true)
-    dm.rect(this.pos, 200, 200, '#def', true)
-    dm.circle(this.pos, 30, '#000', true)
+    dm.rect(this.rect, '#def', true)
+    dm.circle(this.circle, '#000', true)
   }
 
   public update(): SceneBase {
@@ -33,6 +38,10 @@ export default class Game implements SceneBase {
     if (InputKey.isKeyDown(KeyCode.S)) {
       this.pos.y += this.speed
     }
+
+    this.rect.pos = this.pos
+    this.circle.pos = this.pos
+
     return this
   }
 }

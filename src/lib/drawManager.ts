@@ -1,4 +1,7 @@
-import Point from './point'
+//import Point from './point'
+
+import Rect from './rect'
+import Circle from './circle'
 
 export default class DrawManager {
   private ctx: CanvasRenderingContext2D
@@ -18,21 +21,22 @@ export default class DrawManager {
     }
   }
 
-  public rect(
-    p: Point,
-    w: number,
-    h: number,
-    color: string,
-    fill: Boolean
-  ) {
+  public rect(rect: Rect, color: string, fill: Boolean) {
     this.ctx.beginPath()
-    this.ctx.rect(p.x, p.y, w, h)
+    this.ctx.rect(rect.pos.x, rect.pos.y, rect.width, rect.height)
     this.draw(color, fill)
   }
 
-  public circle(p: Point, r: number, color: string, fill: Boolean) {
+  public circle(circle: Circle, color: string, fill: Boolean) {
     this.ctx.beginPath()
-    this.ctx.arc(p.x, p.y, r, 0, Math.PI * 2, false)
+    this.ctx.arc(
+      circle.pos.x,
+      circle.pos.y,
+      circle.radius,
+      0,
+      Math.PI * 2,
+      false
+    )
     this.draw(color, fill)
   }
 
