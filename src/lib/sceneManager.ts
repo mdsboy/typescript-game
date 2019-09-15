@@ -9,7 +9,7 @@ export default class SceneManager {
   private dm: DrawManager
   private screen: Rect
 
-  constructor(readonly scene: SceneBase, width: number, height: 600) {
+  constructor(readonly scene: SceneBase, width: number, height: number) {
     this.current = scene
     this.dm = new DrawManager(width, height)
     this.screen = new Rect(Point.zero, width, height)
@@ -23,7 +23,7 @@ export default class SceneManager {
     requestAnimationFrame(() => this.run())
   }
 
-  public clear(): void {
+  private clear(): void {
     this.dm.rect(this.screen, '#ffffff', true)
   }
 }

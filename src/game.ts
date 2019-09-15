@@ -23,6 +23,8 @@ export default class Game implements SceneBase {
   public draw(dm: DrawManager) {
     dm.rect(this.rect, '#def', true)
     dm.circle(this.circle, '#000', true)
+    dm.line(new Point(50, 100), new Point(200, 300), 3, "#000")
+    dm.string(new Point(300, 300), "abcdef", 300, "000")
   }
 
   public update(): SceneBase {

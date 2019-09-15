@@ -17,9 +17,9 @@ export default class Point {
     return new Point(this.x + p.x, this.y + p.y)
   }
 
-  public dist(p: Point) :number {
-    const dx = this.x - p.x;
-    const dy = this.y - p.y;
+  public dist(p: Point): number {
+    const dx = this.x - p.x
+    const dy = this.y - p.y
     return Math.sqrt(dx * dx + dy * dy)
   }
 }

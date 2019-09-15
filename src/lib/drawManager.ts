@@ -1,4 +1,4 @@
-//import Point from './point'
+import Point from './point'
 
 import Rect from './rect'
 import Circle from './circle'
@@ -38,6 +38,20 @@ export default class DrawManager {
       false
     )
     this.draw(color, fill)
+  }
+
+  public line(p1: Point, p2: Point, l: number, color: string) {
+    this.ctx.beginPath()
+    this.ctx.moveTo(p1.x, p1.y)
+    this.ctx.lineTo(p2.x, p2.y)
+    this.ctx.lineWidth = l
+    this.draw(color, false)
+  }
+
+  public string(pos: Point, str: string, size: number, color: string) {
+    this.ctx.fillStyle = color
+    this.ctx.font = '' + size + "px 'メイリオ'"
+    this.ctx.fillText(str, pos.x, pos.y)
   }
 
   private draw(color: string, fill: Boolean) {
