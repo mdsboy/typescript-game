@@ -2,10 +2,10 @@ import SceneBase from './sceneBase'
 import DrawManager from './drawManager';
 
 export default class SceneManager {
-  current: SceneBase
-  dm: DrawManager
+  private current: SceneBase
+  private dm: DrawManager
 
-  constructor(scene: SceneBase) {
+  constructor(readonly scene: SceneBase) {
     this.current = scene
     this.dm = new DrawManager(800, 600)
   }

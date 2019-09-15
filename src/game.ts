@@ -1,9 +1,9 @@
-import Point from './point'
+import Point from './lib/point'
 
-import { InputKey, KeyCode } from './input'
-import DrawManager from './drawManager'
+import { InputKey, KeyCode } from './lib/input'
+import DrawManager from './lib/drawManager'
 
-import SceneBase from './sceneBase'
+import SceneBase from './lib/sceneBase'
 
 export default class Game implements SceneBase {
   private pos: Point

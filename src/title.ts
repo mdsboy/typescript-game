@@ -1,7 +1,7 @@
-import DrawManager from './drawManager'
-import { InputKey, KeyCode } from './input'
+import DrawManager from './lib/drawManager'
+import { InputKey, KeyCode } from './lib/input'
 
-import SceneBase from './sceneBase'
+import SceneBase from './lib/sceneBase'
 import Game from './game'
 
 export default class Title implements SceneBase {

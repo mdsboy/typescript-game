@@ -1,5 +1,5 @@
 import Title from './title'
-import SceneManager from './sceneManager'
+import SceneManager from './lib/sceneManager'
 
 onload = () => {
   let sceneManager = new SceneManager(new Title())
