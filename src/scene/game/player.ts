@@ -63,9 +63,14 @@ export default class Player {
     }
 
     this.angle += 1
-    const x = this.rotateCircle.pos.x + this.len * Math.cos(degreeToRadian(this.angle))
-    const y = this.rotateCircle.pos.y + this.len * Math.sin(degreeToRadian(this.angle))
-    this.circle.pos = new Point(x, y)
+    
+    this.circle.pos = this.rotateCircle.pos.add(
+      new Point(
+        this.len * Math.cos(degreeToRadian(this.angle)),
+        this.len * Math.sin(degreeToRadian(this.angle))
+      )
+    )
+    console.log(this.circle.pos)
   }
 
   private rotateEnd(): void {

@@ -8,7 +8,7 @@ export default class Point {
     this.y = y
   }
 
-  public move(p: Point) {
+  public move(p: Point): void {
     this.x += p.x
     this.y += p.y
   }
