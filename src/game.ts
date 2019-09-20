@@ -7,7 +7,7 @@ import SceneBase from './lib/sceneBase'
 import Rect from './lib/rect'
 import Circle from './lib/circle'
 import { InputMouse } from './lib/inputMouse'
-import {radianToDegree, degreeToRadian} from './lib/util'
+import { radianToDegree, degreeToRadian } from './lib/util'
 
 export default class Game implements SceneBase {
   private pos: Point
@@ -27,6 +27,7 @@ export default class Game implements SceneBase {
     this.rect = new Rect(Point.zero, 200, 200)
     this.circle = new Circle(this.pos, 30)
     this.rotate_circle = null
+    this.ay = 0
   }
 
   public draw() {
@@ -73,11 +74,19 @@ export default class Game implements SceneBase {
     }
 
     if (this.rotate) {
-      this.angle += 2
+      this.angle += 1
       this.circle.pos.x =
         this.center.x + this.len * Math.cos(degreeToRadian(this.angle))
       this.circle.pos.y =
         this.center.y + this.len * Math.sin(degreeToRadian(this.angle))
+    } else {
+      this.pos.y += this.ay
+      this.ay += 1
+    }
+
+    if (this.pos.y >= dm.height) {
+      this.pos.y = dm.height
+      this.ay = 0
     }
 
     return this
