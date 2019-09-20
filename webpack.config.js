@@ -8,7 +8,11 @@ module.exports = {
     filename: '[name].js'
   },
   resolve: {
-    extensions: ['.ts', '.js']
+    extensions: ['.ts', '.js'],
+    alias: {
+      lib: path.resolve(__dirname, 'src/lib/'),
+      scene: path.resolve(__dirname, 'src/scene/'),
+    }
   },
   devServer: {
     contentBase: path.join(__dirname, 'public')

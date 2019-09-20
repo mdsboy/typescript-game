@@ -1,10 +1,10 @@
-import Point from './lib/point';
+import Point from 'lib/point';
 
-import DrawManager from './lib/drawManager'
-import { InputKey, KeyCode } from './lib/inputKey'
+import DrawManager from 'lib/drawManager'
+import { InputKey, KeyCode } from 'lib/inputKey'
 
-import SceneBase from './lib/sceneBase'
-import Game from './game'
+import SceneBase from 'lib/sceneBase'
+import Game from './game/game'
 
 export default class Title implements SceneBase {
   constructor() {

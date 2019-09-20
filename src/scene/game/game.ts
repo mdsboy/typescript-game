@@ -1,10 +1,10 @@
-import SceneBase from './lib/sceneBase'
+import SceneBase from 'lib/sceneBase'
 
-import dm from './lib/drawManager'
+import dm from 'lib/drawManager'
 
 import Player from './player'
-import Rect from './lib/rect'
-import Point from './lib/point'
+import Rect from 'lib/rect'
+import Point from 'lib/point'
 
 export default class Game implements SceneBase {
   private player: Player

@@ -1,12 +1,12 @@
-import { InputKey, KeyCode } from './lib/inputKey'
-import { InputMouse } from './lib/inputMouse'
+import { InputKey, KeyCode } from 'lib/inputKey'
+import { InputMouse } from 'lib/inputMouse'
 
-import dm from './lib/drawManager'
+import dm from 'lib/drawManager'
 
-import { radianToDegree, degreeToRadian } from './lib/util'
+import { radianToDegree, degreeToRadian } from 'lib/util'
 
-import Point from './lib/point'
-import Circle from './lib/circle'
+import Point from 'lib/point'
+import Circle from 'lib/circle'
 
 export default class Player {
   private speed: number
