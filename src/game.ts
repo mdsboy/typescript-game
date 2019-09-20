@@ -16,7 +16,7 @@ export default class Game implements SceneBase {
   constructor() {
     this.pos = new Point(100, 100)
     this.speed = 5
-    this.rect = new Rect(this.pos, 200, 200)
+    this.rect = new Rect(Point.zero, 200, 200)
     this.circle = new Circle(this.pos, 30)
   }
 
@@ -41,7 +41,6 @@ export default class Game implements SceneBase {
       this.pos.y += this.speed
     }
 
-    this.rect.pos = this.pos
     this.circle.pos = this.pos
 
     return this
