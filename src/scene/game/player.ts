@@ -9,11 +9,9 @@ import Point from 'lib/point'
 import Circle from 'lib/circle'
 
 export default class Player {
-  private speed: number
+  private readonly speed: number
   private circle: Circle
   private angle: number
-  private isRotating: boolean
-  private center: Point
   private rotateCircle: Circle | null
   private len: number
   private ay: number
@@ -35,7 +33,7 @@ export default class Player {
 
   public update(): void {
     if (InputMouse.isMouseLeftDown()) {
-      if (!this.isRotating) {
+      if (this.rotateCircle == null) {
         this.rotateStart()
       }
       this.rotate()
@@ -46,14 +44,13 @@ export default class Player {
   }
 
   private rotateStart(): void {
-    this.isRotating = true
-    this.center = InputMouse.getMousepos()
+    const center = InputMouse.getMousepos()
 
-    this.len = this.center.dist(this.circle.pos)
-    this.rotateCircle = new Circle(this.center, this.len)
+    this.len = center.dist(this.circle.pos)
+    this.rotateCircle = new Circle(center, this.len)
 
-    const x = this.circle.pos.x - this.center.x
-    const y = this.circle.pos.y - this.center.y
+    const x = this.circle.pos.x - center.x
+    const y = this.circle.pos.y - center.y
     this.angle = radianToDegree(Math.atan2(y, x))
     console.log(this.angle)
 
@@ -61,15 +58,18 @@ export default class Player {
   }
 
   private rotate(): void {
+    if (this.rotateCircle == null) {
+      return
+    }
+
     this.angle += 1
-    const x = this.center.x + this.len * Math.cos(degreeToRadian(this.angle))
-    const y = this.center.y + this.len * Math.sin(degreeToRadian(this.angle))
+    const x = this.rotateCircle.pos.x + this.len * Math.cos(degreeToRadian(this.angle))
+    const y = this.rotateCircle.pos.y + this.len * Math.sin(degreeToRadian(this.angle))
     this.circle.pos = new Point(x, y)
   }
 
   private rotateEnd(): void {
     this.rotateCircle = null
-    this.isRotating = false
     this.angle = 0
   }
 
