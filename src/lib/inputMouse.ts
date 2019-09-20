@@ -1,9 +1,9 @@
-import Point from './point'
+import Vec2 from './vec2'
 export class InputMouse {
   private static mouseInput: Array<boolean> = Array(2)
-  private static mousePos: Point
+  private static mousePos: Vec2
 
-  public static getMousepos(): Point {
+  public static getMousepos(): Vec2 {
     return this.mousePos
   }
 
@@ -11,7 +11,7 @@ export class InputMouse {
     return this.mouseInput[0]
   }
 
-  public static setMousePos(pos: Point) {
+  public static setMousePos(pos: Vec2) {
     this.mousePos = pos
   }
 
@@ -25,7 +25,7 @@ export class InputMouse {
 }
 
 document.onmousemove = e => {
-  InputMouse.setMousePos(new Point(e.offsetX, e.offsetY))
+  InputMouse.setMousePos(new Vec2(e.offsetX, e.offsetY))
 }
 
 document.onmousedown = () => {

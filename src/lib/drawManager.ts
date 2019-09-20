@@ -1,4 +1,4 @@
-import Point from './point'
+import Vec2 from './vec2'
 
 import Rect from './rect'
 import Circle from './circle'
@@ -46,7 +46,7 @@ export default class DrawManager {
     this.draw(color, fill)
   }
 
-  public static line(p1: Point, p2: Point, l: number, color: string) {
+  public static line(p1: Vec2, p2: Vec2, l: number, color: string) {
     this.ctx.beginPath()
     this.ctx.moveTo(p1.x, p1.y)
     this.ctx.lineTo(p2.x, p2.y)
@@ -54,7 +54,7 @@ export default class DrawManager {
     this.draw(color, false)
   }
 
-  public static string(pos: Point, str: string, size: number, color: string) {
+  public static string(pos: Vec2, str: string, size: number, color: string) {
     this.ctx.fillStyle = color
     this.ctx.font = '' + size + "px 'メイリオ'"
     this.ctx.fillText(str, pos.x, pos.y)

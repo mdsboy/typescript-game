@@ -1,4 +1,4 @@
-import Point from 'lib/point';
+import Vec2 from 'lib/vec2';
 
 import DrawManager from 'lib/drawManager'
 import { InputKey, KeyCode } from 'lib/inputKey'
@@ -11,7 +11,7 @@ export default class Title implements SceneBase {
   }
 
   public draw() {
-    DrawManager.string(new Point(300, 300), "title", 300, '#000')
+    DrawManager.string(new Vec2(300, 300), "title", 300, '#000')
   }
 
   public update(): SceneBase {

@@ -1,15 +1,15 @@
-import Point from './point'
+import Vec2 from './vec2'
 
 export default class Circle {
-  public pos: Point
+  public pos: Vec2
   public radius: number
 
-  constructor(pos: Point, radius: number) {
+  constructor(pos: Vec2, radius: number) {
     this.pos = pos
     this.radius = radius
   }
 
-  public inPoint(pos: Point): boolean {
+  public inVec2(pos: Vec2): boolean {
     return this.pos.dist(pos) <= this.radius
   }
 }

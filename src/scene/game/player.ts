@@ -5,7 +5,7 @@ import dm from 'lib/drawManager'
 
 import { radianToDegree, degreeToRadian } from 'lib/util'
 
-import Point from 'lib/point'
+import Vec2 from 'lib/vec2'
 import Circle from 'lib/circle'
 
 export default class Player {
@@ -18,7 +18,7 @@ export default class Player {
 
   constructor() {
     this.speed = 5
-    this.circle = new Circle(new Point(100, 100), 30)
+    this.circle = new Circle(new Vec2(100, 100), 30)
     this.rotateCircle = null
     this.ay = 0
   }
@@ -49,9 +49,8 @@ export default class Player {
     this.len = center.dist(this.circle.pos)
     this.rotateCircle = new Circle(center, this.len)
 
-    const x = this.circle.pos.x - center.x
-    const y = this.circle.pos.y - center.y
-    this.angle = radianToDegree(Math.atan2(y, x))
+    const sub = this.circle.pos.sub(center)
+    this.angle = radianToDegree(Math.atan2(sub.y, sub.x))
     console.log(this.angle)
 
     this.ay = 0
@@ -63,12 +62,9 @@ export default class Player {
     }
 
     this.angle += 1
-    
+
     this.circle.pos = this.rotateCircle.pos.add(
-      new Point(
-        this.len * Math.cos(degreeToRadian(this.angle)),
-        this.len * Math.sin(degreeToRadian(this.angle))
-      )
+      Vec2.cosSin(degreeToRadian(this.angle)).scalarMul(this.len)
     )
     console.log(this.circle.pos)
   }

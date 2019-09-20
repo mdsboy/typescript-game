@@ -4,7 +4,7 @@ import dm from 'lib/drawManager'
 
 import Player from './player'
 import Rect from 'lib/rect'
-import Point from 'lib/point'
+import Vec2 from 'lib/vec2'
 
 export default class Game implements SceneBase {
   private player: Player
@@ -13,15 +13,15 @@ export default class Game implements SceneBase {
 
   constructor() {
     this.player = new Player()
-    this.rect = new Rect(Point.zero, 200, 200)
+    this.rect = new Rect(Vec2.zero, 200, 200)
   }
 
   public draw() {
     this.player.draw()
 
     dm.rect(this.rect, '#def', true)
-    dm.line(new Point(50, 100), new Point(200, 300), 3, '#000')
-    dm.string(new Point(300, 300), 'abcdef', 300, '000')
+    dm.line(new Vec2(50, 100), new Vec2(200, 300), 3, '#000')
+    dm.string(new Vec2(300, 300), 'abcdef', 300, '000')
   }
 
   public update(): SceneBase {

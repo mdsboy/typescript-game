@@ -2,7 +2,7 @@ import SceneBase from './sceneBase'
 import DrawManager from './drawManager'
 
 import Rect from './rect'
-import Point from './point'
+import Vec2 from './vec2'
 
 export default class SceneManager {
   private current: SceneBase
@@ -11,7 +11,7 @@ export default class SceneManager {
   constructor(readonly scene: SceneBase, width: number, height: number) {
     DrawManager.init(width, height)
     this.current = scene
-    this.screen = new Rect(Point.zero, width, height)
+    this.screen = new Rect(Vec2.zero, width, height)
   }
 
   public run(): void {
