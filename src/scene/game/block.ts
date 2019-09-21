@@ -12,7 +12,7 @@ export default class Block implements Entity {
   }
 
   public draw(): void {
-    dm.rect(this.rect, '#000', true)
+    dm.rect(this.rect, '#555555', true)
     dm.rect(this.rect, '#0000ff', false)
   }
   public update(): void {}

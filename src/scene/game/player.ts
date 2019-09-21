@@ -21,16 +21,17 @@ export default class Player {
 
   constructor() {
     this.speed = 10
-    this.circle = new Circle(new Vec2(500, 500), 30)
+    this.circle = new Circle(new Vec2(500, 500), 25)
     this.rotateCircle = null
     this.ay = 0
   }
 
   public draw() {
-    dm.circle(this.circle, '#000', true)
+    dm.circle(this.circle, '#bb0000', true)
 
     if (this.rotateCircle) {
       dm.circle(this.rotateCircle, '#000', false)
+      dm.line(this.circle.pos, this.rotateCircle.pos, 1, '#000')
     }
 
     if (this.collide) {
