@@ -1,7 +1,10 @@
 export default class Vec2 {
   public x: number
   public y: number
-  public static zero: Vec2 = new Vec2(0, 0)
+
+  public static zero(): Vec2 {
+    return new Vec2(0, 0)
+  }
 
   constructor(x: number, y: number) {
     this.x = x
@@ -19,6 +22,11 @@ export default class Vec2 {
 
   public sub(p: Vec2): Vec2 {
     return new Vec2(this.x - p.x, this.y - p.y)
+  }
+
+  public subAssign(p: Vec2): void {
+    this.x -= p.x
+    this.y -= p.y
   }
 
   public dist(p: Vec2): number {

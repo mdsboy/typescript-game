@@ -7,6 +7,7 @@ import { radianToDegree, degreeToRadian } from 'lib/util'
 
 import Vec2 from 'lib/vec2'
 import Circle from 'lib/circle'
+import Block from './block';
 
 export default class Player {
   private readonly speed: number
@@ -15,6 +16,7 @@ export default class Player {
   private rotateCircle: Circle | null
   private len: number
   private ay: number
+  private collide: boolean
 
   constructor() {
     this.speed = 5
@@ -29,9 +31,13 @@ export default class Player {
     if (this.rotateCircle) {
       dm.circle(this.rotateCircle, '#000', false)
     }
+
+    if (this.collide) {
+      dm.circle(this.circle, '#ff0000', false)
+    }
   }
 
-  public update(): void {
+  public update(blocks: Array<Block>): void {
     if (InputMouse.isMouseLeftDown()) {
       if (this.rotateCircle == null) {
         this.rotateStart()
@@ -39,7 +45,7 @@ export default class Player {
       this.rotate()
     } else {
       this.rotateEnd()
-      this.notRotate()
+      this.notRotate(blocks)
     }
   }
 
@@ -74,21 +80,37 @@ export default class Player {
     this.angle = 0
   }
 
-  private notRotate(): void {
-    let pos = this.circle.pos
+  private notRotate(blocks: Array<Block>): void {
+    let vec = Vec2.zero()
 
     if (InputKey.isKeyDown(KeyCode.A)) {
-      pos.x -= this.speed
+      vec.x -= this.speed
     }
     if (InputKey.isKeyDown(KeyCode.D)) {
-      pos.x += this.speed
+      vec.x += this.speed
     }
 
-    pos.y += this.ay
+    vec.y += this.ay
     this.ay += 1
-    if (pos.y >= dm.height) {
-      pos.y = dm.height
+    /*
+    if (this.circle.pos.y >= dm.height) {
+      this.circle.pos.y = dm.height
       this.ay = 0
+    }*/
+    console.log(this.circle.pos)
+    this.circle.pos.addAssign(vec)
+
+    this.collide = false
+    for (let block of blocks) {
+      if (this.circle.collideRect(block.rect)) {
+        this.collide = true
+        this.circle.pos.subAssign(vec)
+        
+        if (vec.y > 0) {
+          this.ay = 0
+        }
+        break
+      }
     }
   }
 }
