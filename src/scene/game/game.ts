@@ -28,9 +28,6 @@ export default class Game implements SceneBase {
       block.draw()
     }
 
-    dm.line(new Vec2(50, 100), new Vec2(200, 300), 3, '#000')
-    dm.string(new Vec2(300, 300), 'abcdef', 300, '000')
-
     this.player.draw()
   }
 
