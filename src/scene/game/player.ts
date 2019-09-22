@@ -9,6 +9,7 @@ import Vec2 from 'lib/vec2'
 import Circle from 'lib/circle'
 import Block from './block'
 import Color from 'lib/color'
+import Entity from './entity';
 
 export default class Player {
   private readonly speed: number
@@ -116,21 +117,21 @@ export default class Player {
     }*/
   }
 
-  public update(blocks: Array<Block>): void {
+  public update(entities: Array<Entity>): void {
     if (InputMouse.isMouseLeftDown()) {
       if (this.rotateCircle == null) {
-        this.rotateStart(blocks)
+        this.rotateStart(entities)
       }
       this.rotate()
     } else {
       if (this.rotateCircle) {
-        this.rotateEnd(blocks)
+        this.rotateEnd(entities)
       }
-      this.notRotate(blocks)
+      this.notRotate(entities)
     }
   }
 
-  private rotateStart(blocks: Array<Block>): void {
+  private rotateStart(entities: Array<Entity>): void {
     const center = InputMouse.getMousepos()
 
     this.len = center.dist(this.circle.pos)
@@ -147,8 +148,8 @@ export default class Player {
 
     this.ay = 0
 
-    for (let block of blocks) {
-      block.isCenter = block.rect.inVec2(center)
+    for (let entity of entities) {
+      entity.rotateStart(center)
     }
   }
 
@@ -169,23 +170,23 @@ export default class Player {
     console.log(this.circle.pos)
   }
 
-  private rotateEnd(blocks: Array<Block>): void {
+  private rotateEnd(entities: Array<Entity>): void {
     this.rotateCircle = null
     this.angle = 0
 
-    for (let block of blocks) {
-      block.isCenter = false
+    for (let entity of entities) {
+      entity.rotateEnd
     }
 
-    for (let block of blocks) {
-      if (this.circle.collideRect(block.rect)) {
+    for (let entity of entities) {
+      if (entity.collide(this.circle)) {
         this.circle.pos = this.start_circle.pos
         return
       }
     }
   }
 
-  private notRotate(blocks: Array<Block>): void {
+  private notRotate(entities: Array<Entity>): void {
     let vec = new Vec2(0, 0)
 
     if (InputKey.isKeyDown(KeyCode.A)) {
@@ -200,13 +201,13 @@ export default class Player {
 
     console.log(this.circle.pos)
     this.circle.pos.addAssign(new Vec2(0, vec.y))
-    for (let block of blocks) {
-      block.move(new Vec2(-vec.x, 0))
+    for (let entity of entities) {
+      entity.move(new Vec2(-vec.x, 0))
     }
 
     this.collide = false
-    for (let block of blocks) {
-      if (this.circle.collideRect(block.rect)) {
+    for (let entity of entities) {
+      if (entity.collide(this.circle)) {
         this.collide = true
         this.circle.pos.subAssign(new Vec2(0, vec.y))
         if (vec.y > 0) {
@@ -216,8 +217,8 @@ export default class Player {
       }
     }
     if (this.collide) {
-      for (let block of blocks) {
-        block.move(new Vec2(vec.x, 0))
+      for (let entity of entities) {
+        entity.move(new Vec2(vec.x, 0))
       }
     }
   }
