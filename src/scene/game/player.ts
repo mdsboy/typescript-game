@@ -7,9 +7,8 @@ import { radianToDegree, degreeToRadian } from 'lib/util'
 
 import Vec2 from 'lib/vec2'
 import Circle from 'lib/circle'
-import Block from './block'
 import Color from 'lib/color'
-import Entity from './entity';
+import Entity from './entity'
 
 export default class Player {
   private readonly speed: number
@@ -111,7 +110,7 @@ export default class Player {
       dm.fillCircle(this.circle, Color.red_color(200, 0.7))
       dm.strokeCircle(this.circle, Color.red_color(200, 1), 3)
     }
-/*
+    /*
     if (this.collide) {
       dm.strokeCircle(this.circle, Color.red, 3)
     }*/
@@ -133,6 +132,10 @@ export default class Player {
 
   private rotateStart(entities: Array<Entity>): void {
     const center = InputMouse.getMousepos()
+
+    if (this.circle.inVec2(center)) {
+      return
+    }
 
     this.len = center.dist(this.circle.pos)
     this.rotateCircle = new Circle(center, this.len)
@@ -175,7 +178,7 @@ export default class Player {
     this.angle = 0
 
     for (let entity of entities) {
-      entity.rotateEnd
+      entity.rotateEnd()
     }
 
     for (let entity of entities) {
