@@ -1,4 +1,6 @@
 import Vec2 from './vec2'
+import SceneManager from './sceneManager';
+
 export class InputMouse {
   private static mouseInput: Array<boolean> = Array(2)
   private static mousePos: Vec2
@@ -29,7 +31,9 @@ document.onmousemove = e => {
 }
 
 document.onmousedown = () => {
-  InputMouse.mouseDown()
+  if (SceneManager.getScreen().inVec2(InputMouse.getMousepos())) {
+    InputMouse.mouseDown()
+  }
 }
 
 document.onmouseup = () => {

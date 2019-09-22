@@ -5,15 +5,9 @@ import Circle from './circle'
 import Color from './color';
 
 export default class DrawManager {
-  public static width: number
-  public static height: number
-
   private static ctx: CanvasRenderingContext2D
 
   public static init(width: number, height: number) {
-    this.width = width
-    this.height = height
-
     const canvas = document.createElement('canvas')
     canvas.width = width
     canvas.height = height
