@@ -16,7 +16,7 @@ export default class Game implements SceneBase {
     Block.size = 50
     for (let i = 0; i < 50; i++) {
       for (let j = 0; j < 20; j++) {
-        if (j >= 13 || i == 15) {
+        if (j >= 13 || i == 15 || i + j == 25) {
           this.block.push(new Block(new Vec2(i * Block.size, j * Block.size)))
         }
       }

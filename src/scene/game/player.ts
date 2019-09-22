@@ -107,12 +107,13 @@ export default class Player {
       dm.fillCircle(this.circle, Color.red_color(200, 0.3))
       dm.strokeCircle(this.circle, Color.red, 3)
     } else {
-      dm.fillCircle(this.circle, Color.red)
+      dm.fillCircle(this.circle, Color.red_color(200, 0.7))
+      dm.strokeCircle(this.circle, Color.red_color(200, 1), 3)
     }
-
+/*
     if (this.collide) {
       dm.strokeCircle(this.circle, Color.red, 3)
-    }
+    }*/
   }
 
   public update(blocks: Array<Block>): void {
