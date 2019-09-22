@@ -3,6 +3,7 @@ import DrawManager from './drawManager'
 
 import Rect from './rect'
 import Vec2 from './vec2'
+import Color from './color';
 
 export default class SceneManager {
   private current: SceneBase
@@ -23,7 +24,7 @@ export default class SceneManager {
   }
 
   private clear(): void {
-    DrawManager.fillRect(this.screen, '#ffffff')
-    DrawManager.strokeRect(this.screen, '#000000', 3)
+    DrawManager.fillRect(this.screen, Color.white)
+    DrawManager.strokeRect(this.screen, Color.black, 3)
   }
 }

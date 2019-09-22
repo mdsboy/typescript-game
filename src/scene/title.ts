@@ -5,13 +5,14 @@ import { InputKey, KeyCode } from 'lib/inputKey'
 
 import SceneBase from 'lib/sceneBase'
 import Game from './game/game'
+import Color from 'lib/color';
 
 export default class Title implements SceneBase {
   constructor() {
   }
 
   public draw() {
-    DrawManager.string(new Vec2(300, 300), "title", 300, '#000')
+    DrawManager.string(new Vec2(300, 300), "title", 300, Color.black)
   }
 
   public update(): SceneBase {

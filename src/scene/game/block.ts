@@ -2,6 +2,7 @@ import Entity from './entity'
 import Rect from 'lib/rect'
 import Vec2 from 'lib/vec2'
 import dm from 'lib/drawManager'
+import Color from 'lib/color';
 
 export default class Block implements Entity {
   public rect: Rect
@@ -12,8 +13,8 @@ export default class Block implements Entity {
   }
 
   public draw(): void {
-    dm.fillRect(this.rect, '#555555')
-    dm.strokeRect(this.rect, '#0000ff', 3)
+    dm.fillRect(this.rect, new Color(100, 100, 100))
+    dm.strokeRect(this.rect, Color.blue, 3)
   }
   public update(): void {}
 

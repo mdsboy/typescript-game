@@ -8,6 +8,7 @@ import { radianToDegree, degreeToRadian } from 'lib/util'
 import Vec2 from 'lib/vec2'
 import Circle from 'lib/circle'
 import Block from './block'
+import Color from 'lib/color';
 
 export default class Player {
   private readonly speed: number
@@ -31,16 +32,16 @@ export default class Player {
   public draw() {
 
     if (this.rotateCircle) {
-      dm.strokeCircle(this.rotateCircle, '#000', 3)
-      dm.line(this.circle.pos, this.rotateCircle.pos, 1, '#000')
-      dm.strokeCircle(new Circle(this.start_pos, this.radius), '#000', 3)
-      dm.strokeCircle(this.circle, '#bb0000', 3)
+      dm.strokeCircle(this.rotateCircle, Color.black, 3)
+      dm.line(this.circle.pos, this.rotateCircle.pos, Color.black, 1)
+      dm.strokeCircle(new Circle(this.start_pos, this.radius), Color.black, 3)
+      dm.strokeCircle(this.circle, Color.red, 3)
     } else {
-      dm.fillCircle(this.circle, '#bb0000')
+      dm.fillCircle(this.circle, Color.red)
     }
 
     if (this.collide) {
-      dm.strokeCircle(this.circle, '#ff0000', 3)
+      dm.strokeCircle(this.circle, Color.red, 3)
     }
   }
 
