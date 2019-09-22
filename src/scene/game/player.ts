@@ -18,24 +18,29 @@ export default class Player {
   private len: number
   private ay: number
   private collide: boolean
+  private start_pos: Vec2
+  private readonly radius = 25
 
   constructor() {
     this.speed = 10
-    this.circle = new Circle(new Vec2(500, 500), 25)
+    this.circle = new Circle(new Vec2(500, 500), this.radius)
     this.rotateCircle = null
     this.ay = 0
   }
 
   public draw() {
-    dm.circle(this.circle, '#bb0000', true)
 
     if (this.rotateCircle) {
-      dm.circle(this.rotateCircle, '#000', false)
+      dm.strokeCircle(this.rotateCircle, '#000', 3)
       dm.line(this.circle.pos, this.rotateCircle.pos, 1, '#000')
+      dm.strokeCircle(new Circle(this.start_pos, this.radius), '#000', 3)
+      dm.strokeCircle(this.circle, '#bb0000', 3)
+    } else {
+      dm.fillCircle(this.circle, '#bb0000')
     }
 
     if (this.collide) {
-      dm.circle(this.circle, '#ff0000', false)
+      dm.strokeCircle(this.circle, '#ff0000', 3)
     }
   }
 
@@ -62,6 +67,7 @@ export default class Player {
     console.log(this.angle)
 
     this.rotateDir = center.x >= this.circle.pos.x
+    this.start_pos = this.circle.pos
 
     this.ay = 0
   }

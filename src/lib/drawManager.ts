@@ -27,13 +27,19 @@ export default class DrawManager {
     }
   }
 
-  public static rect(rect: Rect, color: string, fill: Boolean) {
+  public static fillRect(rect: Rect, color: string) {
     this.ctx.beginPath()
     this.ctx.rect(rect.pos.x, rect.pos.y, rect.width, rect.height)
-    this.draw(color, fill)
+    this.fillDraw(color)
   }
 
-  public static circle(circle: Circle, color: string, fill: Boolean) {
+  public static strokeRect(rect: Rect, color: string, width: number) {
+    this.ctx.beginPath()
+    this.ctx.rect(rect.pos.x, rect.pos.y, rect.width, rect.height)
+    this.strokeDraw(color, width)
+  }
+
+  public static fillCircle(circle: Circle, color: string) {
     this.ctx.beginPath()
     this.ctx.arc(
       circle.pos.x,
@@ -43,21 +49,44 @@ export default class DrawManager {
       Math.PI * 2,
       false
     )
-    this.draw(color, fill)
+    this.fillDraw(color)
   }
 
-  public static line(p1: Vec2, p2: Vec2, l: number, color: string) {
+  public static strokeCircle(circle: Circle, color: string, width: number) {
+    this.ctx.beginPath()
+    this.ctx.arc(
+      circle.pos.x,
+      circle.pos.y,
+      circle.radius,
+      0,
+      Math.PI * 2,
+      false
+    )
+    this.strokeDraw(color, width)
+  }
+
+  public static line(p1: Vec2, p2: Vec2, width: number, color: string) {
     this.ctx.beginPath()
     this.ctx.moveTo(p1.x, p1.y)
     this.ctx.lineTo(p2.x, p2.y)
-    this.ctx.lineWidth = l
-    this.draw(color, false)
+    this.strokeDraw(color, width)
   }
 
   public static string(pos: Vec2, str: string, size: number, color: string) {
     this.ctx.fillStyle = color
     this.ctx.font = '' + size + "px 'メイリオ'"
     this.ctx.fillText(str, pos.x, pos.y)
+  }
+
+  private static fillDraw(color: string) {
+    this.ctx.fillStyle = color
+    this.ctx.fill()
+  }
+
+  private static strokeDraw(color: string, width: number) {
+    this.ctx.strokeStyle = color
+    this.ctx.lineWidth = width
+    this.ctx.stroke()
   }
 
   private static draw(color: string, fill: Boolean) {

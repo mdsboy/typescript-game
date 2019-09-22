@@ -12,8 +12,8 @@ export default class Block implements Entity {
   }
 
   public draw(): void {
-    dm.rect(this.rect, '#555555', true)
-    dm.rect(this.rect, '#0000ff', false)
+    dm.fillRect(this.rect, '#555555')
+    dm.strokeRect(this.rect, '#0000ff', 3)
   }
   public update(): void {}
 

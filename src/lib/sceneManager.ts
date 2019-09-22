@@ -23,7 +23,7 @@ export default class SceneManager {
   }
 
   private clear(): void {
-    DrawManager.rect(this.screen, '#ffffff', true)
-    DrawManager.rect(this.screen, '#000000', false)
+    DrawManager.fillRect(this.screen, '#ffffff')
+    DrawManager.strokeRect(this.screen, '#000000', 3)
   }
 }
