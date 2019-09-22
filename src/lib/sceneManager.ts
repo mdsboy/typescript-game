@@ -12,7 +12,7 @@ export default class SceneManager {
   constructor(readonly scene: SceneBase, width: number, height: number) {
     DrawManager.init(width, height)
     this.current = scene
-    this.screen = new Rect(Vec2.zero(), width, height)
+    this.screen = new Rect(Vec2.zero, width, height)
   }
 
   public run(): void {

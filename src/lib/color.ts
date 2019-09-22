@@ -6,11 +6,11 @@ export default class Color {
   public b: number
   public a: number
 
-  public static readonly white = new Color(255, 255, 255)
-  public static readonly red = new Color(255, 0, 0)
-  public static readonly green = new Color(0, 255, 0)
-  public static readonly blue = new Color(0, 0, 255)
-  public static readonly black = new Color(0, 0, 0)
+  public static readonly white: Readonly<Color> = new Color(255, 255, 255)
+  public static readonly red: Readonly<Color> = new Color(255, 0, 0)
+  public static readonly green: Readonly<Color> = new Color(0, 255, 0)
+  public static readonly blue: Readonly<Color> = new Color(0, 0, 255)
+  public static readonly black: Readonly<Color> = new Color(0, 0, 0)
 
   constructor(r: number, g: number, b: number, a = 1) {
     this.r = r

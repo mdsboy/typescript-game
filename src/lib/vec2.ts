@@ -2,9 +2,7 @@ export default class Vec2 {
   public x: number
   public y: number
 
-  public static zero(): Vec2 {
-    return new Vec2(0, 0)
-  }
+  public static zero: Readonly<Vec2> = new Vec2(0, 0)
 
   constructor(x: number, y: number) {
     this.x = x
