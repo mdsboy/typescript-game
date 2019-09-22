@@ -35,7 +35,8 @@ export default class Player {
       dm.strokeCircle(this.rotateCircle, Color.black, 3)
       dm.line(this.circle.pos, this.rotateCircle.pos, Color.black, 1)
       dm.strokeCircle(new Circle(this.start_pos, this.radius), Color.black, 3)
-      dm.strokeCircle(this.circle, Color.red, 3)
+      //dm.strokeCircle(this.circle, Color.red, 3)
+      dm.fillCircle(this.circle, new Color(255, 0, 0, 0.3))
     } else {
       dm.fillCircle(this.circle, Color.red)
     }
