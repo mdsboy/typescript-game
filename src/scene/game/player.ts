@@ -121,7 +121,7 @@ export default class Player {
       if (this.rotateCircle == null) {
         this.rotateStart(entities)
       }
-      this.rotate()
+      this.rotate(entities)
     } else {
       if (this.rotateCircle) {
         this.rotateEnd(entities)
@@ -156,9 +156,15 @@ export default class Player {
     }
   }
 
-  private rotate(): void {
+  private rotate(entities: Array<Entity>): void {
     if (this.rotateCircle == null) {
       return
+    }
+
+    for (let entity of entities) {
+      if (entity.getIsCenter()) {
+        this.rotateCircle.pos = entity.getCenterPos()
+      }
     }
 
     if (this.rotateDir) {
@@ -169,6 +175,10 @@ export default class Player {
 
     this.circle.pos = this.rotateCircle.pos.add(
       Vec2.cosSin(degreeToRadian(this.angle)).scalarMul(this.len)
+    )
+
+    this.start_circle.pos = this.rotateCircle.pos.add(
+      Vec2.cosSin(degreeToRadian(this.start_angle)).scalarMul(this.len)
     )
     console.log(this.circle.pos)
   }

@@ -5,15 +5,16 @@ import dm from 'lib/drawManager'
 import Color from 'lib/color'
 import Circle from 'lib/circle'
 
-export default class Box implements Entity {
+export default class moveBlock implements Entity {
   public static size: number
   private rect: Rect
   private isCenter: boolean
-  private ay: number
+  private centerPos: Vec2
+  private vec: Vec2
 
   constructor(pos: Vec2) {
-    this.rect = new Rect(pos, Box.size, Box.size)
-    this.ay = 0
+    this.rect = new Rect(pos, moveBlock.size, moveBlock.size)
+    this.vec = new Vec2(3, 0)
   }
 
   public draw(): void {
@@ -24,9 +25,16 @@ export default class Box implements Entity {
       dm.fillRect(this.rect, new Color(100, 0, 0, 0.8))
     }
   }
-  public update(): void {
-    this.ay += 1
-    this.rect.pos.y += this.ay
+  public update(entities: Array<Entity>): void {
+    if (this.isCenter) {
+      for (let entity of entities) {
+        if (entity != this) {
+          entity.move(this.vec.scalarMul(-1))
+        }
+      }
+    } else {
+      this.rect.pos.addAssign(this.vec)
+    }
   }
 
   public move(v: Vec2): void {
@@ -35,10 +43,19 @@ export default class Box implements Entity {
 
   public rotateStart(center: Vec2): void {
     this.isCenter = this.rect.inVec2(center)
+    this.centerPos = center.sub(this.rect.pos)
   }
 
   public rotateEnd(): void {
     this.isCenter = false
+  }
+
+  public getIsCenter(): boolean {
+    return this.isCenter
+  }
+
+  public getCenterPos(): Vec2 {
+    return this.centerPos.add(this.rect.pos)
   }
 
   public collide(circle: Circle): boolean {

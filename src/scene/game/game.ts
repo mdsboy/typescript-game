@@ -4,7 +4,7 @@ import Player from './player'
 import Vec2 from 'lib/vec2'
 import Block from './block'
 import Entity from './entity'
-import Box from './box'
+import moveBlock from './moveBlock'
 
 export default class Game implements SceneBase {
   private player: Player
@@ -14,16 +14,16 @@ export default class Game implements SceneBase {
     this.player = new Player()
 
     Block.size = 50
-    Box.size = 50
-    for (let i = 0; i < 50; i++) {
+    moveBlock.size = 50
+    for (let i = 0; i < 30; i++) {
       for (let j = 0; j < 20; j++) {
         if (j >= 13 || i == 15 || i + j == 25) {
           this.entities.push(
             new Block(new Vec2(i * Block.size, j * Block.size))
           )
         }
-        if (j == 0) {
-          this.entities.push(new Box(new Vec2(i * Box.size, j * Box.size)))
+        if ((j == 10 || j == 5) && i == 0) {
+          this.entities.push(new moveBlock(new Vec2(i * moveBlock.size, j * moveBlock.size)))
         }
       }
     }
@@ -39,7 +39,7 @@ export default class Game implements SceneBase {
 
   public update(): SceneBase {
     for (let entity of this.entities) {
-      entity.update()
+      entity.update(this.entities)
     }
     this.player.update(this.entities)
 
