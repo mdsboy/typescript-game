@@ -19,6 +19,10 @@ export default class Color {
     this.a = a
   }
 
+  public static black_color(a = 1): Color {
+    return new Color(0, 0, 0, a)
+  }
+
   public static red_color(r: number, a = 1): Color {
     return new Color(r, 0, 0, a)
   }

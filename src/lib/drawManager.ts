@@ -46,23 +46,35 @@ export default class DrawManager {
 
   public static fillCircle(circle: Circle, color: Color) {
     this.ctx.beginPath()
-    this.circle(circle)
+    this.circle(circle, 0, Math.PI * 2)
     this.fillDraw(color)
   }
 
   public static strokeCircle(circle: Circle, color: Color, width: number = 1) {
     this.ctx.beginPath()
-    this.circle(circle)
+    this.circle(circle, 0, Math.PI * 2)
     this.strokeDraw(color, width)
   }
 
-  private static circle(circle: Circle) {
+  public static fillArc(circle: Circle, start: number, end: number, color: Color, width: number = 1) {
+    this.ctx.beginPath()
+    this.circle(circle, start, end)
+    this.fillDraw(color)
+  }
+
+  public static strokeArc(circle: Circle, start: number, end: number, color: Color, width: number = 1) {
+    this.ctx.beginPath()
+    this.circle(circle, start, end)
+    this.strokeDraw(color, width)
+  }
+
+  private static circle(circle: Circle, start: number, end: number) {
     this.ctx.arc(
       circle.pos.x,
       circle.pos.y,
       circle.radius,
-      0,
-      Math.PI * 2,
+      start,
+      end,
       false
     )
   }

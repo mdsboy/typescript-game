@@ -8,7 +8,7 @@ import { radianToDegree, degreeToRadian } from 'lib/util'
 import Vec2 from 'lib/vec2'
 import Circle from 'lib/circle'
 import Block from './block'
-import Color from 'lib/color';
+import Color from 'lib/color'
 
 export default class Player {
   private readonly speed: number
@@ -19,7 +19,8 @@ export default class Player {
   private len: number
   private ay: number
   private collide: boolean
-  private start_pos: Vec2
+  private start_angle: number
+  private start_circle: Circle
   private readonly radius = 25
 
   constructor() {
@@ -30,11 +31,79 @@ export default class Player {
   }
 
   public draw() {
-
     if (this.rotateCircle) {
-      dm.strokeCircle(this.rotateCircle, Color.black, 3)
-      dm.line(this.circle.pos, this.rotateCircle.pos, Color.black, 2)
-      dm.strokeCircle(new Circle(this.start_pos, this.radius), Color.black, 3)
+      dm.strokeCircle(this.rotateCircle, Color.black_color(0.3), 3)
+      dm.strokeCircle(
+        new Circle(
+          this.rotateCircle.pos,
+          this.rotateCircle.radius - this.radius
+        ),
+        Color.black_color(0.2),
+        3
+      )
+      dm.strokeCircle(
+        new Circle(
+          this.rotateCircle.pos,
+          this.rotateCircle.radius + this.radius
+        ),
+        Color.black_color(0.2),
+        3
+      )
+      if (this.rotateDir) {
+        dm.strokeArc(
+          new Circle(
+            this.rotateCircle.pos,
+            this.rotateCircle.radius - this.radius
+          ),
+          degreeToRadian(this.start_angle),
+          degreeToRadian(this.angle),
+          Color.black_color(0.8),
+          3
+        )
+        dm.strokeArc(
+          new Circle(
+            this.rotateCircle.pos,
+            this.rotateCircle.radius + this.radius
+          ),
+          degreeToRadian(this.start_angle),
+          degreeToRadian(this.angle),
+          Color.black_color(0.8),
+          3
+        )
+      } else {
+        dm.strokeArc(
+          new Circle(
+            this.rotateCircle.pos,
+            this.rotateCircle.radius - this.radius
+          ),
+          degreeToRadian(this.angle),
+          degreeToRadian(this.start_angle),
+          Color.black_color(0.8),
+          3
+        )
+        dm.strokeArc(
+          new Circle(
+            this.rotateCircle.pos,
+            this.rotateCircle.radius + this.radius
+          ),
+          degreeToRadian(this.angle),
+          degreeToRadian(this.start_angle),
+          Color.black_color(0.8),
+          3
+        )
+      }
+
+      dm.line(this.circle.pos, this.rotateCircle.pos, Color.black_color(0.5), 2)
+      dm.line(
+        this.start_circle.pos,
+        this.rotateCircle.pos,
+        Color.black_color(0.5),
+        2
+      )
+
+      dm.fillCircle(this.start_circle, Color.black_color(0.3))
+      dm.strokeCircle(this.start_circle, Color.black, 3)
+
       dm.fillCircle(this.circle, Color.red_color(200, 0.3))
       dm.strokeCircle(this.circle, Color.red, 3)
     } else {
@@ -53,7 +122,9 @@ export default class Player {
       }
       this.rotate()
     } else {
-      this.rotateEnd()
+      if (this.rotateCircle) {
+        this.rotateEnd(blocks)
+      }
       this.notRotate(blocks)
     }
   }
@@ -65,11 +136,13 @@ export default class Player {
     this.rotateCircle = new Circle(center, this.len)
 
     const sub = this.circle.pos.sub(center)
-    this.angle = radianToDegree(Math.atan2(sub.y, sub.x))
+
+    this.start_angle = radianToDegree(Math.atan2(sub.y, sub.x))
+    this.angle = this.start_angle
     console.log(this.angle)
 
     this.rotateDir = center.x >= this.circle.pos.x
-    this.start_pos = this.circle.pos
+    this.start_circle = new Circle(this.circle.pos, this.radius)
 
     this.ay = 0
   }
@@ -91,9 +164,16 @@ export default class Player {
     console.log(this.circle.pos)
   }
 
-  private rotateEnd(): void {
+  private rotateEnd(blocks: Array<Block>): void {
     this.rotateCircle = null
     this.angle = 0
+
+    for (let block of blocks) {
+      if (this.circle.collideRect(block.rect)) {
+        this.circle.pos = this.start_circle.pos
+        return
+      }
+    }
   }
 
   private notRotate(blocks: Array<Block>): void {
