@@ -119,7 +119,7 @@ export default class Player {
   public update(blocks: Array<Block>): void {
     if (InputMouse.isMouseLeftDown()) {
       if (this.rotateCircle == null) {
-        this.rotateStart()
+        this.rotateStart(blocks)
       }
       this.rotate()
     } else {
@@ -130,7 +130,7 @@ export default class Player {
     }
   }
 
-  private rotateStart(): void {
+  private rotateStart(blocks: Array<Block>): void {
     const center = InputMouse.getMousepos()
 
     this.len = center.dist(this.circle.pos)
@@ -146,6 +146,10 @@ export default class Player {
     this.start_circle = new Circle(this.circle.pos, this.radius)
 
     this.ay = 0
+
+    for (let block of blocks) {
+      block.isCenter = block.rect.inVec2(center)
+    }
   }
 
   private rotate(): void {
@@ -168,6 +172,10 @@ export default class Player {
   private rotateEnd(blocks: Array<Block>): void {
     this.rotateCircle = null
     this.angle = 0
+
+    for (let block of blocks) {
+      block.isCenter = false
+    }
 
     for (let block of blocks) {
       if (this.circle.collideRect(block.rect)) {
