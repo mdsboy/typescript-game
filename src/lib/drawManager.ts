@@ -6,6 +6,7 @@ import Color from './color';
 
 export default class DrawManager {
   private static ctx: CanvasRenderingContext2D
+  private static cameraPos: Vec2
 
   public static init(width: number, height: number) {
     const canvas = document.createElement('canvas')
@@ -20,6 +21,12 @@ export default class DrawManager {
     } else {
       console.error('Canvas is null')
     }
+
+    this.cameraPos = new Vec2(0, 0)
+  }
+
+  public static setCameraPos(vec: Vec2) {
+    this.cameraPos = vec
   }
 
   public static fillRect(rect: Rect, color: Color) {
@@ -35,7 +42,8 @@ export default class DrawManager {
   }
 
   private static rect(rect: Rect) {
-    this.ctx.rect(rect.pos.x, rect.pos.y, rect.width, rect.height)
+    const pos = rect.pos.sub(this.cameraPos)
+    this.ctx.rect(pos.x, pos.y, rect.width, rect.height)
   }
 
   public static fillCircle(circle: Circle, color: Color) {
@@ -63,9 +71,10 @@ export default class DrawManager {
   }
 
   private static circle(circle: Circle, start: number, end: number) {
+    const pos = circle.pos.sub(this.cameraPos)
     this.ctx.arc(
-      circle.pos.x,
-      circle.pos.y,
+      pos.x,
+      pos.y,
       circle.radius,
       start,
       end,
@@ -75,14 +84,19 @@ export default class DrawManager {
 
   public static line(p1: Vec2, p2: Vec2, color: Color, width: number = 1) {
     this.ctx.beginPath()
-    this.ctx.moveTo(p1.x, p1.y)
-    this.ctx.lineTo(p2.x, p2.y)
+    const pos1 = p1.sub(this.cameraPos)
+    const pos2 = p2.sub(this.cameraPos)
+    this.ctx.moveTo(pos1.x, pos1.y)
+    this.ctx.lineTo(pos2.x, pos2.y)
     this.strokeDraw(color, width)
   }
 
-  public static string(pos: Vec2, str: string, size: number, color: Color) {
+  public static string(p: Vec2, str: string, size: number, color: Color) {
     this.ctx.fillStyle = color.toString()
     this.ctx.font = '' + size + "px 'メイリオ'"
+
+    const pos = p.sub(this.cameraPos)
+
     this.ctx.fillText(str, pos.x, pos.y)
   }
 

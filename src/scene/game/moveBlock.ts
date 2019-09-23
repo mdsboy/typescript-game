@@ -25,16 +25,11 @@ export default class moveBlock implements Entity {
       dm.fillRect(this.rect, new Color(100, 0, 0, 0.8))
     }
   }
-  public update(entities: Array<Entity>): void {
+  public update(cameraPos: Vec2, _entities: Array<Entity>): void {
     if (this.isCenter) {
-      for (let entity of entities) {
-        if (entity != this) {
-          entity.move(this.vec.scalarMul(-1))
-        }
-      }
-    } else {
-      this.rect.pos.addAssign(this.vec)
+      cameraPos.addAssign(this.vec)
     }
+    this.move(this.vec)
   }
 
   public move(v: Vec2): void {

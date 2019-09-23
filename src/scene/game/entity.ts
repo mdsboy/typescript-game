@@ -3,7 +3,7 @@ import Circle from 'lib/circle'
 
 export default interface Entity {
   draw(): void
-  update(entities: Array<Entity>): void
+  update(cameraPos: Vec2, entities: Array<Entity>): void
 
   move(v: Vec2): void
 

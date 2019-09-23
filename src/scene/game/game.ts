@@ -5,12 +5,16 @@ import Vec2 from 'lib/vec2'
 import Block from './block'
 import Entity from './entity'
 import moveBlock from './moveBlock'
+import DrawManager from 'lib/drawManager'
 
 export default class Game implements SceneBase {
   private player: Player
   private entities: Array<Entity> = []
+  private cameraPos: Vec2
 
   constructor() {
+    this.cameraPos = new Vec2(0, 0)
+
     this.player = new Player()
 
     Block.size = 50
@@ -30,18 +34,22 @@ export default class Game implements SceneBase {
   }
 
   public draw() {
+    DrawManager.setCameraPos(this.cameraPos)
+    
     for (let entity of this.entities) {
       entity.draw()
     }
 
     this.player.draw()
+
+    DrawManager.setCameraPos(Vec2.zero)
   }
 
   public update(): SceneBase {
     for (let entity of this.entities) {
-      entity.update(this.entities)
+      entity.update(this.cameraPos, this.entities)
     }
-    this.player.update(this.entities)
+    this.player.update(this.cameraPos, this.entities)
 
     return this
   }
