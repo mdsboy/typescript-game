@@ -4,6 +4,7 @@ import DrawManager from './drawManager'
 import Rect from './rect'
 import Vec2 from './vec2'
 import Color from './color';
+import Camera from './camera';
 
 export default class SceneManager {
   private static current: SceneBase
@@ -11,6 +12,7 @@ export default class SceneManager {
 
   public static init(scene: SceneBase, width: number, height: number) {
     DrawManager.init(width, height)
+    Camera.init(width, height)
     this.current = scene
     this.screen = new Rect(Vec2.zero, width, height)
   }

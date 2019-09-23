@@ -4,6 +4,7 @@ import Vec2 from 'lib/vec2'
 import dm from 'lib/drawManager'
 import Color from 'lib/color'
 import Circle from 'lib/circle'
+import Camera from 'lib/camera'
 
 export default class moveBlock implements Entity {
   public static size: number
@@ -25,9 +26,9 @@ export default class moveBlock implements Entity {
       dm.fillRect(this.rect, new Color(100, 0, 0, 0.8))
     }
   }
-  public update(cameraPos: Vec2, _entities: Array<Entity>): void {
+  public update(_entities: Array<Entity>): void {
     if (this.isCenter) {
-      cameraPos.addAssign(this.vec)
+      Camera.move(this.vec)
     }
     this.move(this.vec)
   }

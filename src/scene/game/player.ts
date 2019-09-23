@@ -9,6 +9,7 @@ import Vec2 from 'lib/vec2'
 import Circle from 'lib/circle'
 import Color from 'lib/color'
 import Entity from './entity'
+import Camera from 'lib/camera'
 
 export default class Player {
   private readonly speed = 10
@@ -85,23 +86,22 @@ export default class Player {
     }
   }
 
-  public update(cameraPos: Vec2, entities: Array<Entity>): void {
+  public update(entities: Array<Entity>): void {
     if (InputMouse.isMouseLeftDown()) {
       if (this.rotateCircle == null) {
-        this.rotateStart(cameraPos, entities)
+        this.rotateStart(entities)
       }
-      this.rotate(cameraPos, entities)
+      this.rotate(entities)
     } else {
       if (this.rotateCircle) {
         this.rotateEnd(entities)
       }
-      this.notRotate(cameraPos, entities)
+      this.notRotate(entities)
     }
   }
 
-  private rotateStart(cameraPos: Vec2, entities: Array<Entity>): void {
-    const center = InputMouse.getMousepos().add(cameraPos)
-    //cameraPos.addAssign(new Vec2(center.sub(cameraPos).x - 540, 0))
+  private rotateStart(entities: Array<Entity>): void {
+    const center = InputMouse.getMousepos().add(Camera.getPos())
 
     if (this.circle.inVec2(center)) {
       return
@@ -127,13 +127,13 @@ export default class Player {
     this.angleSpeed = 1.0
   }
 
-  private rotate(cameraPos: Vec2, entities: Array<Entity>): void {
+  private rotate(entities: Array<Entity>): void {
     if (this.rotateCircle == null) {
       return
     }
 
-    cameraPos.addAssign(
-      new Vec2((this.rotateCircle.pos.sub(cameraPos).x - 540) / 20, 0)
+    Camera.move(
+      new Vec2((this.rotateCircle.pos.sub(Camera.getPos()).x - 540) / 20, 0)
     )
 
     for (let entity of entities) {
@@ -170,7 +170,7 @@ export default class Player {
     }
   }
 
-  private notRotate(cameraPos: Vec2, entities: Array<Entity>): void {
+  private notRotate(entities: Array<Entity>): void {
     let vec = new Vec2(0, 0)
 
     if (InputKey.isKeyDown(KeyCode.A)) {
@@ -185,12 +185,12 @@ export default class Player {
 
     this.circle.pos.addAssign(vec)
 
-    cameraPos.addAssign(new Vec2(vec.x, 0))
+    Camera.move(new Vec2(vec.x, 0))
 
     for (let entity of entities) {
       if (entity.collide(this.circle)) {
         this.circle.pos.subAssign(vec)
-        cameraPos.subAssign(new Vec2(vec.x, 0))
+        Camera.move(new Vec2(-vec.x, 0))
         if (vec.y > 0) {
           this.ay = 0
         }

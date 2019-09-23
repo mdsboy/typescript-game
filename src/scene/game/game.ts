@@ -6,15 +6,13 @@ import Block from './block'
 import Entity from './entity'
 import moveBlock from './moveBlock'
 import DrawManager from 'lib/drawManager'
+import Camera from 'lib/camera'
 
 export default class Game implements SceneBase {
   private player: Player
   private entities: Array<Entity> = []
-  private cameraPos: Vec2
 
   constructor() {
-    this.cameraPos = new Vec2(0, 0)
-
     this.player = new Player()
 
     Block.size = 50
@@ -27,15 +25,17 @@ export default class Game implements SceneBase {
           )
         }
         if ((j == 10 || j == 5) && i == 0) {
-          this.entities.push(new moveBlock(new Vec2(i * moveBlock.size, j * moveBlock.size)))
+          this.entities.push(
+            new moveBlock(new Vec2(i * moveBlock.size, j * moveBlock.size))
+          )
         }
       }
     }
   }
 
   public draw() {
-    DrawManager.setCameraPos(this.cameraPos)
-    
+    DrawManager.setCameraPos(Camera.getPos())
+
     for (let entity of this.entities) {
       entity.draw()
     }
@@ -47,9 +47,9 @@ export default class Game implements SceneBase {
 
   public update(): SceneBase {
     for (let entity of this.entities) {
-      entity.update(this.cameraPos, this.entities)
+      entity.update(this.entities)
     }
-    this.player.update(this.cameraPos, this.entities)
+    this.player.update(this.entities)
 
     return this
   }

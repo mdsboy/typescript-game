@@ -23,7 +23,7 @@ export default class Block implements Entity {
       dm.fillRect(this.rect, new Color(100, 0, 0, 0.8))
     }
   }
-  public update(_cameraPos: Vec2, _entities: Array<Entity>): void {}
+  public update(_entities: Array<Entity>): void {}
 
   public move(v: Vec2): void {
     this.rect.pos.addAssign(v)
