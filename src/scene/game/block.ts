@@ -29,7 +29,6 @@ export default class Block implements Entity {
     this.rect.pos.addAssign(v)
   }
 
-
   public rotateStart(center: Vec2): void {
     this.isCenter = this.rect.inVec2(center)
     this.centerPos = center.sub(this.rect.pos)

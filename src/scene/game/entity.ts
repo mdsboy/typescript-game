@@ -10,8 +10,8 @@ export default interface Entity {
   rotateStart(center: Vec2): void
   rotateEnd(): void
 
-  getIsCenter(): boolean;
-  getCenterPos(): Vec2;
+  getIsCenter(): boolean
+  getCenterPos(): Vec2
 
   collide(circle: Circle): boolean
 }

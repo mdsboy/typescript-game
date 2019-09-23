@@ -11,23 +11,19 @@ import Color from 'lib/color'
 import Entity from './entity'
 
 export default class Player {
-  private readonly speed: number
+  private readonly speed = 10
   private circle: Circle
   private angle: number
-  private rotateCircle: Circle | null
-  private rotateDir: boolean
+  private rotateCircle: Circle | null = null
   private len: number
-  private ay: number
-  private collide: boolean
+  private ay = 0
   private start_angle: number
   private start_circle: Circle
   private readonly radius = 25
+  private angleSpeed = 1.0
 
   constructor() {
-    this.speed = 10
     this.circle = new Circle(new Vec2(500, 500), this.radius)
-    this.rotateCircle = null
-    this.ay = 0
   }
 
   public draw() {
@@ -49,49 +45,26 @@ export default class Player {
         Color.black_color(0.2),
         3
       )
-      if (this.rotateDir) {
-        dm.strokeArc(
-          new Circle(
-            this.rotateCircle.pos,
-            this.rotateCircle.radius - this.radius
-          ),
-          degreeToRadian(this.start_angle),
-          degreeToRadian(this.angle),
-          Color.black_color(0.8),
-          3
-        )
-        dm.strokeArc(
-          new Circle(
-            this.rotateCircle.pos,
-            this.rotateCircle.radius + this.radius
-          ),
-          degreeToRadian(this.start_angle),
-          degreeToRadian(this.angle),
-          Color.black_color(0.8),
-          3
-        )
-      } else {
-        dm.strokeArc(
-          new Circle(
-            this.rotateCircle.pos,
-            this.rotateCircle.radius - this.radius
-          ),
-          degreeToRadian(this.angle),
-          degreeToRadian(this.start_angle),
-          Color.black_color(0.8),
-          3
-        )
-        dm.strokeArc(
-          new Circle(
-            this.rotateCircle.pos,
-            this.rotateCircle.radius + this.radius
-          ),
-          degreeToRadian(this.angle),
-          degreeToRadian(this.start_angle),
-          Color.black_color(0.8),
-          3
-        )
-      }
+      dm.strokeArc(
+        new Circle(
+          this.rotateCircle.pos,
+          this.rotateCircle.radius - this.radius
+        ),
+        degreeToRadian(this.start_angle),
+        degreeToRadian(this.angle),
+        Color.black_color(0.8),
+        3
+      )
+      dm.strokeArc(
+        new Circle(
+          this.rotateCircle.pos,
+          this.rotateCircle.radius + this.radius
+        ),
+        degreeToRadian(this.start_angle),
+        degreeToRadian(this.angle),
+        Color.black_color(0.8),
+        3
+      )
 
       dm.line(this.circle.pos, this.rotateCircle.pos, Color.black_color(0.5), 2)
       dm.line(
@@ -143,7 +116,6 @@ export default class Player {
     this.angle = this.start_angle
     console.log(this.angle)
 
-    this.rotateDir = center.x >= this.circle.pos.x
     this.start_circle = new Circle(this.circle.pos, this.radius)
 
     this.ay = 0
@@ -151,6 +123,8 @@ export default class Player {
     for (let entity of entities) {
       entity.rotateStart(center)
     }
+
+    this.angleSpeed = 1.0
   }
 
   private rotate(cameraPos: Vec2, entities: Array<Entity>): void {
@@ -158,7 +132,9 @@ export default class Player {
       return
     }
 
-    cameraPos.addAssign(new Vec2((this.rotateCircle.pos.sub(cameraPos).x - 540) / 20, 0))
+    cameraPos.addAssign(
+      new Vec2((this.rotateCircle.pos.sub(cameraPos).x - 540) / 20, 0)
+    )
 
     for (let entity of entities) {
       if (entity.getIsCenter()) {
@@ -166,11 +142,8 @@ export default class Player {
       }
     }
 
-    if (this.rotateDir) {
-      this.angle += 1
-    } else {
-      this.angle -= 1
-    }
+    this.angle += this.angleSpeed
+    this.angleSpeed += 0.02
 
     this.circle.pos = this.rotateCircle.pos.add(
       Vec2.cosSin(degreeToRadian(this.angle)).scalarMul(this.len)
@@ -211,13 +184,11 @@ export default class Player {
     this.ay += 1
 
     this.circle.pos.addAssign(vec)
-    
+
     cameraPos.addAssign(new Vec2(vec.x, 0))
 
-    this.collide = false
     for (let entity of entities) {
       if (entity.collide(this.circle)) {
-        this.collide = true
         this.circle.pos.subAssign(vec)
         cameraPos.subAssign(new Vec2(vec.x, 0))
         if (vec.y > 0) {
