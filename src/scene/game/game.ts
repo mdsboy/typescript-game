@@ -34,7 +34,7 @@ export default class Game implements SceneBase {
   }
 
   public draw() {
-    DrawManager.setCameraPos(Camera.getPos())
+    DrawManager.setCameraPos(Camera.getCameraPos())
 
     for (let entity of this.entities) {
       entity.draw()

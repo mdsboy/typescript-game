@@ -1,4 +1,5 @@
 import Vec2 from './vec2'
+import { InputMouse } from './inputMouse'
 
 export default class Camera {
   private static pos: Vec2
@@ -11,11 +12,19 @@ export default class Camera {
     this.height = height
   }
 
-  public static getPos(): Vec2 {
+  public static getCameraPos(): Vec2 {
     return this.pos
   }
 
   public static move(v: Vec2): void {
-      this.pos.addAssign(v)
+    this.pos.addAssign(v)
+  }
+
+  public static getPosInCamera(v: Vec2): Vec2 {
+    return v.sub(this.pos)
+  }
+
+  public static getMousePosInCamera(): Vec2 {
+    return InputMouse.getMousepos().add(this.pos)
   }
 }

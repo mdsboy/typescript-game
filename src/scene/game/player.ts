@@ -101,7 +101,7 @@ export default class Player {
   }
 
   private rotateStart(entities: Array<Entity>): void {
-    const center = InputMouse.getMousepos().add(Camera.getPos())
+    const center = Camera.getMousePosInCamera()
 
     if (this.circle.inVec2(center)) {
       return
@@ -133,7 +133,7 @@ export default class Player {
     }
 
     Camera.move(
-      new Vec2((this.rotateCircle.pos.sub(Camera.getPos()).x - 540) / 20, 0)
+      new Vec2((Camera.getPosInCamera(this.rotateCircle.pos).x - 540) / 20, 0)
     )
 
     for (let entity of entities) {
