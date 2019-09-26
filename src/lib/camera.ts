@@ -27,4 +27,8 @@ export default class Camera {
   public static getMousePosInCamera(): Vec2 {
     return InputMouse.getMousepos().add(this.pos)
   }
+
+  public static getDistFromCetnerX(v: Vec2): number {
+    return this.getPosInCamera(v).x - this.width / 2
+  }
 }

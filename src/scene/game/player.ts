@@ -133,7 +133,7 @@ export default class Player {
     }
 
     Camera.move(
-      new Vec2((Camera.getPosInCamera(this.rotateCircle.pos).x - 540) / 20, 0)
+      new Vec2(Camera.getDistFromCetnerX(this.rotateCircle.pos) / 20, 0)
     )
 
     for (let entity of entities) {
