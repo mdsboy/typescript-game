@@ -8,6 +8,8 @@ import moveBlock from './moveBlock'
 import DrawManager from 'lib/drawManager'
 import Camera from 'lib/camera'
 
+const csv = require('csv')
+
 export default class Game implements SceneBase {
   private player: Player
   private entities: Array<Entity> = []
@@ -17,20 +19,33 @@ export default class Game implements SceneBase {
 
     Block.size = 50
     moveBlock.size = 50
-    for (let i = 0; i < 30; i++) {
-      for (let j = 0; j < 20; j++) {
-        if (j >= 13 || i == 15 || i + j == 25) {
-          this.entities.push(
-            new Block(new Vec2(i * Block.size, j * Block.size))
-          )
-        }
-        if ((j == 10 || j == 5) && i == 0) {
-          this.entities.push(
-            new moveBlock(new Vec2(i * moveBlock.size, j * moveBlock.size))
-          )
-        }
-      }
-    }
+
+    fetch('stage1.csv', {
+      method: 'GET'
+    })
+      .then(response => response.text())
+      .then(text => {
+        console.log(text)
+
+        csv.parse(text, (err: Error, stage: Array<Array<Object>>) => {
+          for (let i = 0; i < stage.length; i++) {
+            for (let j = 0; j < stage[i].length; j++) {
+              switch (stage[i][j]) {
+                case '1':
+                  this.entities.push(
+                    new Block(new Vec2(j * Block.size, i * Block.size))
+                  )
+                  break
+                case "2":
+                  this.entities.push(
+                    new moveBlock(new Vec2(j * Block.size, i * Block.size))
+                  )
+                  break
+              }
+            }
+          }
+        })
+      })
   }
 
   public draw() {
