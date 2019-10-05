@@ -180,13 +180,6 @@ export default class Player {
     for (let entity of entities) {
       entity.rotateEnd()
     }
-    /*
-    for (let entity of entities) {
-      if (entity.collide(this.circle)) {
-        this.circle.pos = this.start_circle.pos
-        return
-      }
-    }*/
   }
 
   private notRotate(entities: Array<Entity>): void {
