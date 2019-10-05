@@ -31,12 +31,16 @@ export default class Game implements SceneBase {
           for (let i = 0; i < stage.length; i++) {
             for (let j = 0; j < stage[i].length; j++) {
               switch (stage[i][j]) {
-                case '1':
+                case "1":
+                  this.player.setPos(new Vec2(j * Block.size, i * Block.size))
+                  console.log("po")
+                  break;
+                case "2":
                   this.entities.push(
                     new Block(new Vec2(j * Block.size, i * Block.size))
                   )
                   break
-                case "2":
+                case "3":
                   this.entities.push(
                     new moveBlock(new Vec2(j * Block.size, i * Block.size))
                   )

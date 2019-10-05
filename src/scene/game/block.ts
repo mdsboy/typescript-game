@@ -30,7 +30,6 @@ export default class Block implements Entity {
   }
 
   public rotateStart(center: Vec2): void {
-    this.isCenter = this.rect.inVec2(center)
     this.centerPos = center.sub(this.rect.pos)
   }
 
@@ -38,8 +37,9 @@ export default class Block implements Entity {
     this.isCenter = false
   }
 
-  public getIsCenter(): boolean {
-    return this.isCenter
+  public getIsCenter(center: Vec2): boolean {
+    this.isCenter = this.rect.inVec2(center)
+    return this.rect.inVec2(center)
   }
 
   public getCenterPos(): Vec2 {

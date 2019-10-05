@@ -22,9 +22,14 @@ export default class Player {
   private start_circle: Circle
   private readonly radius = 25
   private angleSpeed = 1.0
+  private centerEntity: Entity | null = null
 
   constructor() {
-    this.circle = new Circle(new Vec2(500, 500), this.radius)
+    this.circle = new Circle(Vec2.zero, this.radius)
+  }
+
+  public setPos(pos: Vec2) {
+    this.circle.pos = pos.add(new Vec2(this.radius, this.radius))
   }
 
   public draw() {
@@ -106,6 +111,17 @@ export default class Player {
     if (this.circle.inVec2(center)) {
       return
     }
+    for (let entity of entities) {
+      if (entity.getIsCenter(center)) {
+        this.centerEntity = entity
+      }
+    }
+
+    if (this.centerEntity) {
+      this.centerEntity.rotateStart(center)
+    } else {
+      return
+    }
 
     this.len = center.dist(this.circle.pos)
     this.rotateCircle = new Circle(center, this.len)
@@ -114,15 +130,10 @@ export default class Player {
 
     this.start_angle = radianToDegree(Math.atan2(sub.y, sub.x))
     this.angle = this.start_angle
-    console.log(this.angle)
 
     this.start_circle = new Circle(this.circle.pos, this.radius)
 
     this.ay = 0
-
-    for (let entity of entities) {
-      entity.rotateStart(center)
-    }
 
     this.angleSpeed = 1.0
   }
@@ -132,21 +143,29 @@ export default class Player {
       return
     }
 
-    Camera.move(
-      new Vec2(Camera.getDistFromCetnerX(this.rotateCircle.pos) / 20, 0)
-    )
-
-    for (let entity of entities) {
-      if (entity.getIsCenter()) {
-        this.rotateCircle.pos = entity.getCenterPos()
-      }
+    if (this.centerEntity) {
+      this.rotateCircle.pos = this.centerEntity.getCenterPos()
     }
 
     this.angle += this.angleSpeed
     this.angleSpeed += 0.02
 
+    const prevPos = this.circle.pos
+
     this.circle.pos = this.rotateCircle.pos.add(
       Vec2.cosSin(degreeToRadian(this.angle)).scalarMul(this.len)
+    )
+
+    for (let entity of entities) {
+      if (entity.collide(this.circle)) {
+        this.circle.pos = prevPos
+        this.rotateEnd(entities)
+        return
+      }
+    }
+
+    Camera.move(
+      new Vec2(Camera.getDistFromCetnerX(this.rotateCircle.pos) / 20, 0)
     )
 
     this.start_circle.pos = this.rotateCircle.pos.add(
@@ -161,16 +180,23 @@ export default class Player {
     for (let entity of entities) {
       entity.rotateEnd()
     }
-
+    /*
     for (let entity of entities) {
       if (entity.collide(this.circle)) {
         this.circle.pos = this.start_circle.pos
         return
       }
-    }
+    }*/
   }
 
   private notRotate(entities: Array<Entity>): void {
+
+    Camera.move(new Vec2(Camera.getDistFromCetnerX(this.circle.pos) / 100.0, 0))
+
+    for (let entity of entities) {
+      entity.getIsCenter(Camera.getMousePosInCamera())
+    }
+
     let vec = new Vec2(0, 0)
 
     if (InputKey.isKeyDown(KeyCode.A)) {
