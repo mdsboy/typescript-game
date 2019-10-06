@@ -10,19 +10,18 @@ import Circle from 'lib/circle'
 import Color from 'lib/color'
 import Entity from './entity'
 import Camera from 'lib/camera'
+import RotateCircle from './rotateCircle'
 
 export default class Player {
   private readonly speed = 10
   private circle: Circle
   private angle: number
-  private rotateCircle: Circle | null = null
   private len: number
   private ay = 0
-  private start_angle: number
-  private start_circle: Circle
   private readonly radius = 25
   private angleSpeed = 1.0
   private centerEntity: Entity | null = null
+  private rotateCircle: RotateCircle | null = null
 
   constructor() {
     this.circle = new Circle(Vec2.zero, this.radius)
@@ -33,79 +32,11 @@ export default class Player {
   }
 
   public draw() {
-    if (this.rotateCircle && this.centerEntity) {
-      dm.strokeCircle(this.rotateCircle, Color.black_color(0.3), 3)
-      dm.strokeCircle(
-        new Circle(
-          this.rotateCircle.pos,
-          this.rotateCircle.radius - this.radius
-        ),
-        Color.black_color(0.2),
-        3
-      )
-      dm.strokeCircle(
-        new Circle(
-          this.rotateCircle.pos,
-          this.rotateCircle.radius + this.radius
-        ),
-        Color.black_color(0.2),
-        3
-      )
-      if (this.centerEntity.rotateDir()) {
-        dm.strokeArc(
-          new Circle(
-            this.rotateCircle.pos,
-            this.rotateCircle.radius - this.radius
-          ),
-          degreeToRadian(this.start_angle),
-          degreeToRadian(this.angle),
-          Color.black_color(0.8),
-          3
-        )
-        dm.strokeArc(
-          new Circle(
-            this.rotateCircle.pos,
-            this.rotateCircle.radius + this.radius
-          ),
-          degreeToRadian(this.start_angle),
-          degreeToRadian(this.angle),
-          Color.black_color(0.8),
-          3
-        )
-      } else {
-        dm.strokeArc(
-          new Circle(
-            this.rotateCircle.pos,
-            this.rotateCircle.radius - this.radius
-          ),
-          degreeToRadian(this.angle),
-          degreeToRadian(this.start_angle),
-          Color.black_color(0.8),
-          3
-        )
-        dm.strokeArc(
-          new Circle(
-            this.rotateCircle.pos,
-            this.rotateCircle.radius + this.radius
-          ),
-          degreeToRadian(this.angle),
-          degreeToRadian(this.start_angle),
-          Color.black_color(0.8),
-          3
-        )
-      }
+    if (this.rotateCircle) {
+      this.rotateCircle.draw(this.angle)
+    }
 
-      dm.line(this.circle.pos, this.rotateCircle.pos, Color.black_color(0.5), 2)
-      dm.line(
-        this.start_circle.pos,
-        this.rotateCircle.pos,
-        Color.black_color(0.5),
-        2
-      )
-
-      dm.fillCircle(this.start_circle, Color.black_color(0.3))
-      dm.strokeCircle(this.start_circle, Color.black, 3)
-
+    if (this.rotateCircle && this.centerEntity && !this.centerEntity.collide) {
       dm.fillCircle(this.circle, Color.red_color(200, 0.3))
       dm.strokeCircle(this.circle, Color.red, 3)
     } else {
@@ -136,7 +67,7 @@ export default class Player {
     if (this.circle.inVec2(center)) {
       return
     }
-    
+
     this.centerEntity = null
     for (let entity of entities) {
       if (entity.getIsCenter(center)) {
@@ -151,14 +82,19 @@ export default class Player {
     }
 
     this.len = center.dist(this.circle.pos)
-    this.rotateCircle = new Circle(center, this.len)
 
     const sub = this.circle.pos.sub(center)
 
-    this.start_angle = radianToDegree(Math.atan2(sub.y, sub.x))
-    this.angle = this.start_angle
+    const start_angle = radianToDegree(Math.atan2(sub.y, sub.x))
+    this.angle = start_angle
 
-    this.start_circle = new Circle(this.circle.pos, this.radius)
+
+    this.rotateCircle = new RotateCircle(
+      new Circle(center, this.len),
+      new Circle(this.circle.pos, this.radius),
+      start_angle,
+      this.centerEntity.rotateDir()
+    )
 
     this.ay = 0
 
@@ -171,7 +107,7 @@ export default class Player {
     }
 
     if (this.centerEntity) {
-      this.rotateCircle.pos = this.centerEntity.getCenterPos()
+      this.rotateCircle.setPos(this.centerEntity.getCenterPos())
     }
 
     if (this.centerEntity) {
@@ -185,7 +121,7 @@ export default class Player {
 
     const prevPos = this.circle.pos
 
-    this.circle.pos = this.rotateCircle.pos.add(
+    this.circle.pos = this.rotateCircle.getPos().add(
       Vec2.cosSin(degreeToRadian(this.angle)).scalarMul(this.len)
     )
 
@@ -196,14 +132,10 @@ export default class Player {
         return
       }
     }
-/*
+    /*
     Camera.move(
       new Vec2(Camera.getDistFromCetnerX(this.rotateCircle.pos) / 20, 0)
     )*/
-
-    this.start_circle.pos = this.rotateCircle.pos.add(
-      Vec2.cosSin(degreeToRadian(this.start_angle)).scalarMul(this.len)
-    )
   }
 
   private rotateEnd(entities: Array<Entity>): void {
@@ -217,7 +149,6 @@ export default class Player {
   }
 
   private notRotate(entities: Array<Entity>): void {
-
     Camera.move(new Vec2(Camera.getDistFromCetnerX(this.circle.pos) / 50.0, 0))
 
     for (let entity of entities) {
