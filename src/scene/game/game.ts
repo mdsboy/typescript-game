@@ -3,6 +3,7 @@ import SceneBase from 'lib/sceneBase'
 import Player from './player'
 import Vec2 from 'lib/vec2'
 import Block from './block'
+import RevBlock from './revBlock'
 import Entity from './entity'
 import moveBlock from './moveBlock'
 import DrawManager from 'lib/drawManager'
@@ -19,6 +20,7 @@ export default class Game implements SceneBase {
     this.player = new Player()
 
     Block.size = 50
+    RevBlock.size = 50
     moveBlock.size = 50
 
     this.load()
@@ -36,16 +38,20 @@ export default class Game implements SceneBase {
           for (let i = 0; i < stage.length; i++) {
             for (let j = 0; j < stage[i].length; j++) {
               switch (stage[i][j]) {
-                case "1":
+                case '1':
                   this.player.setPos(new Vec2(j * Block.size, i * Block.size))
-                  console.log("po")
-                  break;
-                case "2":
+                  break
+                case '2':
                   this.entities.push(
                     new Block(new Vec2(j * Block.size, i * Block.size))
                   )
                   break
-                case "3":
+                case '3':
+                  this.entities.push(
+                    new RevBlock(new Vec2(j * Block.size, i * Block.size))
+                  )
+                  break
+                case '4':
                   this.entities.push(
                     new moveBlock(new Vec2(j * Block.size, i * Block.size))
                   )

@@ -54,6 +54,10 @@ export default class moveBlock implements Entity {
     return this.centerPos.add(this.rect.pos)
   }
 
+  public rotateDir(): boolean {
+    return true
+  }
+
   public collide(circle: Circle): boolean {
     return circle.collideRect(this.rect)
   }

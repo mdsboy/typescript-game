@@ -13,5 +13,7 @@ export default interface Entity {
   getIsCenter(center: Vec2): boolean
   getCenterPos(): Vec2
 
+  rotateDir(): boolean
+
   collide(circle: Circle): boolean
 }

@@ -7,7 +7,7 @@ import Circle from 'lib/circle'
 
 import { degreeToRadian } from 'lib/util'
 
-export default class Block implements Entity {
+export default class RevBlock implements Entity {
   public static size: number
   private rect: Rect
   private circle: Circle
@@ -15,8 +15,8 @@ export default class Block implements Entity {
   private centerPos: Vec2
 
   constructor(pos: Vec2) {
-    this.rect = new Rect(pos, Block.size, Block.size)
-    this.circle = new Circle(pos, Block.size / 3)
+    this.rect = new Rect(pos, RevBlock.size, RevBlock.size)
+    this.circle = new Circle(pos, RevBlock.size / 3)
   }
 
   public draw(): void {
@@ -28,7 +28,7 @@ export default class Block implements Entity {
     }
 
     this.circle.pos = this.rect.pos.add(
-      new Vec2(Block.size / 2, Block.size / 2)
+      new Vec2(RevBlock.size / 2, RevBlock.size / 2)
     )
 
     dm.strokeArc(
@@ -41,12 +41,12 @@ export default class Block implements Entity {
 
     const startPos = this.circle.pos.add(
       new Vec2(
-        Math.cos(degreeToRadian(60)),
-        Math.sin(degreeToRadian(60))
+        Math.cos(degreeToRadian(120)),
+        Math.sin(degreeToRadian(120))
       ).scalarMul(this.circle.radius)
     )
-    dm.line(startPos, startPos.add(new Vec2(10, 0)), Color.white, 2)
-    dm.line(startPos, startPos.add(new Vec2(-5, -10)), Color.white, 2)
+    dm.line(startPos, startPos.add(new Vec2(-10, 0)), Color.white, 2)
+    dm.line(startPos, startPos.add(new Vec2(5, -10)), Color.white, 2)
   }
   public update(_entities: Array<Entity>): void {}
 
@@ -72,7 +72,7 @@ export default class Block implements Entity {
   }
 
   public rotateDir(): boolean {
-    return true
+    return false
   }
 
   public collide(circle: Circle): boolean {
