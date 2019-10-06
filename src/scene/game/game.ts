@@ -13,6 +13,7 @@ const csv = require('csv')
 export default class Game implements SceneBase {
   private player: Player
   private entities: Array<Entity> = []
+  private loadFinished = false
 
   constructor() {
     this.player = new Player()
@@ -20,6 +21,10 @@ export default class Game implements SceneBase {
     Block.size = 50
     moveBlock.size = 50
 
+    this.load()
+  }
+
+  public load() {
     fetch('stage1.csv', {
       method: 'GET'
     })
@@ -48,11 +53,16 @@ export default class Game implements SceneBase {
               }
             }
           }
+          this.loadFinished = true
         })
       })
   }
 
   public draw() {
+    console.log(this.loadFinished)
+    if (!this.loadFinished) {
+      return
+    }
     DrawManager.setCameraPos(Camera.getCameraPos())
 
     for (let entity of this.entities) {
@@ -65,6 +75,10 @@ export default class Game implements SceneBase {
   }
 
   public update(): SceneBase {
+    if (!this.loadFinished) {
+      return this
+    }
+
     for (let entity of this.entities) {
       entity.update(this.entities)
     }

@@ -101,6 +101,8 @@ export default class Player {
       if (this.rotateCircle) {
         this.rotateEnd(entities)
       }
+    }
+    if (this.centerEntity == null) {
       this.notRotate(entities)
     }
   }
@@ -111,6 +113,8 @@ export default class Player {
     if (this.circle.inVec2(center)) {
       return
     }
+    
+    this.centerEntity = null
     for (let entity of entities) {
       if (entity.getIsCenter(center)) {
         this.centerEntity = entity
@@ -180,6 +184,7 @@ export default class Player {
     for (let entity of entities) {
       entity.rotateEnd()
     }
+    this.centerEntity = null
   }
 
   private notRotate(entities: Array<Entity>): void {

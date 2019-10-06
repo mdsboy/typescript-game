@@ -5,7 +5,7 @@ import dm from 'lib/drawManager'
 import Color from 'lib/color'
 import Circle from 'lib/circle'
 
-import { radianToDegree, degreeToRadian } from 'lib/util'
+import { degreeToRadian } from 'lib/util'
 
 export default class Block implements Entity {
   public static size: number
