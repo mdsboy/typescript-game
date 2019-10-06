@@ -61,4 +61,8 @@ export default class moveBlock implements Entity {
   public collide(circle: Circle): boolean {
     return circle.collideRect(this.rect)
   }
+
+  public transparent(): boolean {
+    return false
+  }
 }

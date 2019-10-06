@@ -38,19 +38,24 @@ export default class Game implements SceneBase {
               const num = parseInt(stage[i][j])
               switch (num) {
                 case 1:
-                  this.player.setPos(new Vec2(j * Block.size, i * Block.size))
+                  const pos = new Vec2(j * Block.size, i * Block.size)
+                  this.player.setPos(pos)
+                  Camera.move(new Vec2(Camera.getDistFromCetnerX(pos), 0))
                   break
                 case 2:
                   this.entities.push(
-                    new Block(new Vec2(j * Block.size, i * Block.size), true)
+                    new Block(new Vec2(j * Block.size, i * Block.size), true, false)
                   )
                   break
                 case 3:
                   this.entities.push(
-                    new Block(new Vec2(j * Block.size, i * Block.size), false)
+                    new Block(new Vec2(j * Block.size, i * Block.size), false, false)
                   )
                   break
                 case 4:
+                  this.entities.push(
+                    new Block(new Vec2(j * Block.size, i * Block.size), true, true)
+                  )
                   break
                 case 11:
                   this.entities.push(

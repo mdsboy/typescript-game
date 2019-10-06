@@ -16,4 +16,5 @@ export default interface Entity {
   rotateDir(): boolean
 
   collide(circle: Circle): boolean
+  transparent(): boolean
 }

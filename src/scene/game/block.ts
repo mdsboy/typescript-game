@@ -15,16 +15,23 @@ export default class Block implements Entity {
   private isCenter: boolean
   private centerPos: Vec2
   private dir: boolean
+  private trans: boolean
 
-  constructor(pos: Vec2, dir: boolean) {
+  constructor(pos: Vec2, dir: boolean, trans: boolean) {
     this.rect = new Rect(pos, Block.size, Block.size)
     this.circle = new Circle(pos, Block.size / 3)
     this.dir = dir
+    this.trans = trans
   }
 
   public draw(): void {
-    dm.fillRect(this.rect, new Color(100, 100, 100))
-    dm.strokeRect(this.rect, Color.blue, 3)
+    if (this.trans) {
+      dm.fillRect(this.rect, new Color(200, 200, 200))
+      dm.strokeRect(this.rect, Color.blue, 3)
+    } else {
+      dm.fillRect(this.rect, new Color(100, 100, 100))
+      dm.strokeRect(this.rect, Color.blue, 3)
+    }
 
     if (this.isCenter) {
       dm.fillRect(this.rect, new Color(100, 0, 0, 0.8))
@@ -59,7 +66,7 @@ export default class Block implements Entity {
         Color.white,
         2
       )
-  
+
       const startPos = this.circle.pos.add(
         new Vec2(
           Math.cos(degreeToRadian(120)),
@@ -68,7 +75,6 @@ export default class Block implements Entity {
       )
       dm.line(startPos, startPos.add(new Vec2(-10, 0)), Color.white, 2)
       dm.line(startPos, startPos.add(new Vec2(5, -10)), Color.white, 2)
-      
     }
   }
   public update(_entities: Array<Entity>): void {}
@@ -100,5 +106,9 @@ export default class Block implements Entity {
 
   public collide(circle: Circle): boolean {
     return circle.collideRect(this.rect)
+  }
+
+  public transparent(): boolean {
+    return this.trans
   }
 }

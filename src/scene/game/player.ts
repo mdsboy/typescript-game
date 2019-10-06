@@ -36,7 +36,11 @@ export default class Player {
       this.rotateCircle.draw(this.angle)
     }
 
-    if (this.rotateCircle && this.centerEntity && !this.centerEntity.collide) {
+    if (
+      this.rotateCircle &&
+      this.centerEntity &&
+      this.centerEntity.transparent()
+    ) {
       dm.fillCircle(this.circle, Color.red_color(200, 0.3))
       dm.strokeCircle(this.circle, Color.red, 3)
     } else {
@@ -88,7 +92,6 @@ export default class Player {
     const start_angle = radianToDegree(Math.atan2(sub.y, sub.x))
     this.angle = start_angle
 
-
     this.rotateCircle = new RotateCircle(
       new Circle(center, this.len),
       new Circle(this.circle.pos, this.radius),
@@ -121,15 +124,17 @@ export default class Player {
 
     const prevPos = this.circle.pos
 
-    this.circle.pos = this.rotateCircle.getPos().add(
-      Vec2.cosSin(degreeToRadian(this.angle)).scalarMul(this.len)
-    )
+    this.circle.pos = this.rotateCircle
+      .getPos()
+      .add(Vec2.cosSin(degreeToRadian(this.angle)).scalarMul(this.len))
 
-    for (let entity of entities) {
-      if (entity.collide(this.circle)) {
-        this.circle.pos = prevPos
-        this.rotateEnd(entities)
-        return
+    if (this.centerEntity && !this.centerEntity.transparent()) {
+      for (let entity of entities) {
+        if (entity.collide(this.circle)) {
+          this.circle.pos = prevPos
+          this.rotateEnd(entities)
+          return
+        }
       }
     }
     /*
