@@ -2,10 +2,10 @@ import Vec2 from './vec2'
 
 import Rect from './rect'
 import Circle from './circle'
-import Color from './color';
+import Color from './color'
 
 export default class DrawManager {
-  private static ctx: CanvasRenderingContext2D
+  public static ctx: CanvasRenderingContext2D
   private static cameraPos: Vec2
 
   public static init(width: number, height: number) {
@@ -29,13 +29,17 @@ export default class DrawManager {
     this.cameraPos = vec
   }
 
-  public static fillRect(rect: Rect, color: Color) {
+  public static fillRect(rect: Rect, color: Color | CanvasGradient) {
     this.ctx.beginPath()
     this.rect(rect)
     this.fillDraw(color)
   }
 
-  public static strokeRect(rect: Rect, color: Color, width: number = 1) {
+  public static strokeRect(
+    rect: Rect,
+    color: Color | CanvasGradient,
+    width: number = 1
+  ) {
     this.ctx.beginPath()
     this.rect(rect)
     this.strokeDraw(color, width)
@@ -46,25 +50,41 @@ export default class DrawManager {
     this.ctx.rect(pos.x, pos.y, rect.width, rect.height)
   }
 
-  public static fillCircle(circle: Circle, color: Color) {
+  public static fillCircle(circle: Circle, color: Color | CanvasGradient) {
     this.ctx.beginPath()
     this.circle(circle, 0, Math.PI * 2)
     this.fillDraw(color)
   }
 
-  public static strokeCircle(circle: Circle, color: Color, width: number = 1) {
+  public static strokeCircle(
+    circle: Circle,
+    color: Color | CanvasGradient,
+    width: number = 1
+  ) {
     this.ctx.beginPath()
     this.circle(circle, 0, Math.PI * 2)
     this.strokeDraw(color, width)
   }
 
-  public static fillArc(circle: Circle, start: number, end: number, color: Color, width: number = 1) {
+  public static fillArc(
+    circle: Circle,
+    start: number,
+    end: number,
+    color: Color | CanvasGradient,
+    width: number = 1
+  ) {
     this.ctx.beginPath()
     this.circle(circle, start, end)
     this.fillDraw(color)
   }
 
-  public static strokeArc(circle: Circle, start: number, end: number, color: Color, width: number = 1) {
+  public static strokeArc(
+    circle: Circle,
+    start: number,
+    end: number,
+    color: Color | CanvasGradient,
+    width: number = 1
+  ) {
     this.ctx.beginPath()
     this.circle(circle, start, end)
     this.strokeDraw(color, width)
@@ -72,17 +92,15 @@ export default class DrawManager {
 
   private static circle(circle: Circle, start: number, end: number) {
     const pos = circle.pos.sub(this.cameraPos)
-    this.ctx.arc(
-      pos.x,
-      pos.y,
-      circle.radius,
-      start,
-      end,
-      false
-    )
+    this.ctx.arc(pos.x, pos.y, circle.radius, start, end, false)
   }
 
-  public static line(p1: Vec2, p2: Vec2, color: Color, width: number = 1) {
+  public static line(
+    p1: Vec2,
+    p2: Vec2,
+    color: Color | CanvasGradient,
+    width: number = 1
+  ) {
     this.ctx.beginPath()
     const pos1 = p1.sub(this.cameraPos)
     const pos2 = p2.sub(this.cameraPos)
@@ -91,7 +109,12 @@ export default class DrawManager {
     this.strokeDraw(color, width)
   }
 
-  public static string(p: Vec2, str: string, size: number, color: Color) {
+  public static string(
+    p: Vec2,
+    str: string,
+    size: number,
+    color: Color | CanvasGradient
+  ) {
     this.ctx.fillStyle = color.toString()
     this.ctx.font = '' + size + "px 'メイリオ'"
 
@@ -100,13 +123,21 @@ export default class DrawManager {
     this.ctx.fillText(str, pos.x, pos.y)
   }
 
-  private static fillDraw(color: Color) {
-    this.ctx.fillStyle = color.toString()
+  private static fillDraw(color: Color | CanvasGradient) {
+    if (color instanceof Color) {
+      this.ctx.fillStyle = color.toString()
+    } else {
+      this.ctx.fillStyle = color
+    }
     this.ctx.fill()
   }
 
-  private static strokeDraw(color: Color, width: number) {
-    this.ctx.strokeStyle = color.toString()
+  private static strokeDraw(color: Color | CanvasGradient, width: number) {
+    if (color instanceof Color) {
+      this.ctx.strokeStyle = color.toString()
+    } else {
+      this.ctx.strokeStyle = color
+    }
     this.ctx.lineWidth = width
     this.ctx.stroke()
   }

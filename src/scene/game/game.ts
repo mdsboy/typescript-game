@@ -7,6 +7,8 @@ import Entity from './entity'
 import moveBlock from './moveBlock'
 import DrawManager from 'lib/drawManager'
 import Camera from 'lib/camera'
+import Rect from 'lib/rect'
+import SceneManager from 'lib/sceneManager'
 
 const csv = require('csv')
 
@@ -44,17 +46,29 @@ export default class Game implements SceneBase {
                   break
                 case 2:
                   this.entities.push(
-                    new Block(new Vec2(j * Block.size, i * Block.size), true, false)
+                    new Block(
+                      new Vec2(j * Block.size, i * Block.size),
+                      true,
+                      false
+                    )
                   )
                   break
                 case 3:
                   this.entities.push(
-                    new Block(new Vec2(j * Block.size, i * Block.size), false, false)
+                    new Block(
+                      new Vec2(j * Block.size, i * Block.size),
+                      false,
+                      false
+                    )
                   )
                   break
                 case 4:
                   this.entities.push(
-                    new Block(new Vec2(j * Block.size, i * Block.size), true, true)
+                    new Block(
+                      new Vec2(j * Block.size, i * Block.size),
+                      true,
+                      true
+                    )
                   )
                   break
                 case 11:
@@ -75,6 +89,16 @@ export default class Game implements SceneBase {
     if (!this.loadFinished) {
       return
     }
+    let gradient = DrawManager.ctx.createLinearGradient(
+      0,
+      0,
+      SceneManager.getScreen().width,
+      0
+    )
+    gradient.addColorStop(0.0, 'rgba(255, 255, 255, 0.3)')
+    gradient.addColorStop(1.0, 'rgba(0, 0, 0, 0.3)')
+    DrawManager.fillRect(SceneManager.getScreen(), gradient)
+
     DrawManager.setCameraPos(Camera.getCameraPos())
 
     for (let entity of this.entities) {

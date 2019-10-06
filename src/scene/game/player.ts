@@ -45,7 +45,7 @@ export default class Player {
       dm.strokeCircle(this.circle, Color.red, 3)
     } else {
       dm.fillCircle(this.circle, Color.red_color(200, 0.7))
-      dm.strokeCircle(this.circle, Color.red_color(200, 1), 3)
+      dm.strokeCircle(this.circle, Color.red, 3)
     }
   }
 
