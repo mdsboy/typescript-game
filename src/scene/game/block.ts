@@ -16,6 +16,9 @@ export default class Block implements Entity {
   private centerPos: Vec2
   private dir: boolean
   private trans: boolean
+  private angle1 = 120
+  private angle2 = 60
+  private readonly angleSpeed = 0.5
 
   constructor(pos: Vec2, dir: boolean, trans: boolean) {
     this.rect = new Rect(pos, Block.size, Block.size)
@@ -44,40 +47,89 @@ export default class Block implements Entity {
     if (this.dir) {
       dm.strokeArc(
         this.circle,
-        degreeToRadian(120),
-        degreeToRadian(60),
+        degreeToRadian(this.angle1),
+        degreeToRadian(this.angle2),
         Color.white,
         2
       )
 
       const startPos = this.circle.pos.add(
         new Vec2(
-          Math.cos(degreeToRadian(60)),
-          Math.sin(degreeToRadian(60))
+          Math.cos(degreeToRadian(this.angle2)),
+          Math.sin(degreeToRadian(this.angle2))
         ).scalarMul(this.circle.radius)
       )
-      dm.line(startPos, startPos.add(new Vec2(10, 0)), Color.white, 2)
-      dm.line(startPos, startPos.add(new Vec2(-5, -10)), Color.white, 2)
+      dm.line(
+        startPos,
+        startPos.add(
+          new Vec2(
+            Math.cos(degreeToRadian(this.angle2 - 60)),
+            Math.sin(degreeToRadian(this.angle2 - 60))
+          ).scalarMul(10)
+        ),
+        Color.white,
+        2
+      )
+      dm.line(
+        startPos,
+        startPos.add(
+          new Vec2(
+            Math.cos(degreeToRadian(this.angle2 - 150)),
+            Math.sin(degreeToRadian(this.angle2 - 150))
+          ).scalarMul(10)
+        ),
+        Color.white,
+        2
+      )
     } else {
       dm.strokeArc(
         this.circle,
-        degreeToRadian(120),
-        degreeToRadian(60),
+        degreeToRadian(this.angle1),
+        degreeToRadian(this.angle2),
         Color.white,
         2
       )
 
       const startPos = this.circle.pos.add(
         new Vec2(
-          Math.cos(degreeToRadian(120)),
-          Math.sin(degreeToRadian(120))
+          Math.cos(degreeToRadian(this.angle1)),
+          Math.sin(degreeToRadian(this.angle1))
         ).scalarMul(this.circle.radius)
       )
-      dm.line(startPos, startPos.add(new Vec2(-10, 0)), Color.white, 2)
-      dm.line(startPos, startPos.add(new Vec2(5, -10)), Color.white, 2)
+
+      dm.line(
+        startPos,
+        startPos.add(
+          new Vec2(
+            Math.cos(degreeToRadian(this.angle1 + 60)),
+            Math.sin(degreeToRadian(this.angle1 + 60))
+          ).scalarMul(10)
+        ),
+        Color.white,
+        2
+      )
+      dm.line(
+        startPos,
+        startPos.add(
+          new Vec2(
+            Math.cos(degreeToRadian(this.angle1 + 150)),
+            Math.sin(degreeToRadian(this.angle1 + 150))
+          ).scalarMul(10)
+        ),
+        Color.white,
+        2
+      )
     }
   }
-  public update(_entities: Array<Entity>): void {}
+  public update(_entities: Array<Entity>): void {
+    if (this.dir) {
+      this.angle1 += this.angleSpeed
+      this.angle2 += this.angleSpeed
+    } else {
+      this.angle1 -= this.angleSpeed
+      this.angle2 -= this.angleSpeed
+    }
+  }
 
   public move(v: Vec2): void {
     this.rect.pos.addAssign(v)
