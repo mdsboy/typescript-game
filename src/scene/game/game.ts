@@ -3,7 +3,6 @@ import SceneBase from 'lib/sceneBase'
 import Player from './player'
 import Vec2 from 'lib/vec2'
 import Block from './block'
-import RevBlock from './revBlock'
 import Entity from './entity'
 import moveBlock from './moveBlock'
 import DrawManager from 'lib/drawManager'
@@ -20,7 +19,6 @@ export default class Game implements SceneBase {
     this.player = new Player()
 
     Block.size = 50
-    RevBlock.size = 50
     moveBlock.size = 50
 
     this.load()
@@ -34,24 +32,27 @@ export default class Game implements SceneBase {
       .then(text => {
         console.log(text)
 
-        csv.parse(text, (err: Error, stage: Array<Array<Object>>) => {
+        csv.parse(text, (err: Error, stage: Array<Array<string>>) => {
           for (let i = 0; i < stage.length; i++) {
             for (let j = 0; j < stage[i].length; j++) {
-              switch (stage[i][j]) {
-                case '1':
+              const num = parseInt(stage[i][j])
+              switch (num) {
+                case 1:
                   this.player.setPos(new Vec2(j * Block.size, i * Block.size))
                   break
-                case '2':
+                case 2:
                   this.entities.push(
-                    new Block(new Vec2(j * Block.size, i * Block.size))
+                    new Block(new Vec2(j * Block.size, i * Block.size), true)
                   )
                   break
-                case '3':
+                case 3:
                   this.entities.push(
-                    new RevBlock(new Vec2(j * Block.size, i * Block.size))
+                    new Block(new Vec2(j * Block.size, i * Block.size), false)
                   )
                   break
-                case '4':
+                case 4:
+                  break
+                case 11:
                   this.entities.push(
                     new moveBlock(new Vec2(j * Block.size, i * Block.size))
                   )

@@ -6,6 +6,7 @@ import Color from 'lib/color'
 import Circle from 'lib/circle'
 
 import { degreeToRadian } from 'lib/util'
+import { threadId } from 'worker_threads'
 
 export default class Block implements Entity {
   public static size: number
@@ -13,10 +14,12 @@ export default class Block implements Entity {
   private circle: Circle
   private isCenter: boolean
   private centerPos: Vec2
+  private dir: boolean
 
-  constructor(pos: Vec2) {
+  constructor(pos: Vec2, dir: boolean) {
     this.rect = new Rect(pos, Block.size, Block.size)
     this.circle = new Circle(pos, Block.size / 3)
+    this.dir = dir
   }
 
   public draw(): void {
@@ -31,22 +34,42 @@ export default class Block implements Entity {
       new Vec2(Block.size / 2, Block.size / 2)
     )
 
-    dm.strokeArc(
-      this.circle,
-      degreeToRadian(120),
-      degreeToRadian(60),
-      Color.white,
-      2
-    )
+    if (this.dir) {
+      dm.strokeArc(
+        this.circle,
+        degreeToRadian(120),
+        degreeToRadian(60),
+        Color.white,
+        2
+      )
 
-    const startPos = this.circle.pos.add(
-      new Vec2(
-        Math.cos(degreeToRadian(60)),
-        Math.sin(degreeToRadian(60))
-      ).scalarMul(this.circle.radius)
-    )
-    dm.line(startPos, startPos.add(new Vec2(10, 0)), Color.white, 2)
-    dm.line(startPos, startPos.add(new Vec2(-5, -10)), Color.white, 2)
+      const startPos = this.circle.pos.add(
+        new Vec2(
+          Math.cos(degreeToRadian(60)),
+          Math.sin(degreeToRadian(60))
+        ).scalarMul(this.circle.radius)
+      )
+      dm.line(startPos, startPos.add(new Vec2(10, 0)), Color.white, 2)
+      dm.line(startPos, startPos.add(new Vec2(-5, -10)), Color.white, 2)
+    } else {
+      dm.strokeArc(
+        this.circle,
+        degreeToRadian(120),
+        degreeToRadian(60),
+        Color.white,
+        2
+      )
+  
+      const startPos = this.circle.pos.add(
+        new Vec2(
+          Math.cos(degreeToRadian(120)),
+          Math.sin(degreeToRadian(120))
+        ).scalarMul(this.circle.radius)
+      )
+      dm.line(startPos, startPos.add(new Vec2(-10, 0)), Color.white, 2)
+      dm.line(startPos, startPos.add(new Vec2(5, -10)), Color.white, 2)
+      
+    }
   }
   public update(_entities: Array<Entity>): void {}
 
@@ -72,7 +95,7 @@ export default class Block implements Entity {
   }
 
   public rotateDir(): boolean {
-    return true
+    return this.dir
   }
 
   public collide(circle: Circle): boolean {
