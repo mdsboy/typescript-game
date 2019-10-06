@@ -41,7 +41,7 @@ export default class Player {
       this.centerEntity &&
       this.centerEntity.transparent()
     ) {
-      dm.fillCircle(this.circle, Color.red_color(200, 0.3))
+      dm.fillCircle(this.circle, Color.red_color(200, 0.1))
       dm.strokeCircle(this.circle, Color.red, 3)
     } else {
       dm.fillCircle(this.circle, Color.red_color(200, 0.7))
@@ -144,11 +144,21 @@ export default class Player {
   }
 
   private rotateEnd(entities: Array<Entity>): void {
-    this.rotateCircle = null
     this.angle = 0
 
-    for (let entity of entities) {
-      entity.rotateEnd()
+    if (this.centerEntity && this.centerEntity.transparent()) {
+      for (let entity of entities) {
+        if (entity.collide(this.circle)) {
+          if (this.rotateCircle) {
+            this.circle.pos = this.rotateCircle.getStartPos()
+          }
+        }
+      }
+    }
+    this.rotateCircle = null
+
+    if (this.centerEntity) {
+      this.centerEntity.rotateEnd()
     }
     this.centerEntity = null
   }
