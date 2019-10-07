@@ -37,14 +37,16 @@ export default class Game implements SceneBase {
         csv.parse(text, (err: Error, stage: Array<Array<string>>) => {
           for (let i = 0; i < stage.length; i++) {
             for (let j = 0; j < stage[i].length; j++) {
-              const num = parseInt(stage[i][j])
-              switch (num) {
-                case 1:
+              switch (stage[i][j]) {
+                case 'p':
                   const pos = new Vec2(j * Block.size, i * Block.size)
                   this.player.setPos(pos)
                   Camera.move(new Vec2(Camera.getDistFromCetnerX(pos), 0))
                   break
-                case 2:
+                case 'c':
+                  this.player.addCheckPoint(new Vec2(j * Block.size, i * Block.size))
+                  break;
+                case 'br':
                   this.entities.push(
                     new Block(
                       new Vec2(j * Block.size, i * Block.size),
@@ -53,7 +55,7 @@ export default class Game implements SceneBase {
                     )
                   )
                   break
-                case 3:
+                case 'bl':
                   this.entities.push(
                     new Block(
                       new Vec2(j * Block.size, i * Block.size),
@@ -62,7 +64,7 @@ export default class Game implements SceneBase {
                     )
                   )
                   break
-                case 4:
+                case 'tr':
                   this.entities.push(
                     new Block(
                       new Vec2(j * Block.size, i * Block.size),
@@ -71,7 +73,7 @@ export default class Game implements SceneBase {
                     )
                   )
                   break
-                case 11:
+                case 'mbr':
                   this.entities.push(
                     new moveBlock(new Vec2(j * Block.size, i * Block.size))
                   )

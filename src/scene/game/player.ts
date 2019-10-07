@@ -22,6 +22,8 @@ export default class Player {
   private angleSpeed = 1.0
   private centerEntity: Entity | null = null
   private rotateCircle: RotateCircle | null = null
+  private checkPoints: Array<Vec2> = []
+  private respawnPos: Vec2
 
   constructor() {
     this.circle = new Circle(Vec2.zero, this.radius)
@@ -29,6 +31,11 @@ export default class Player {
 
   public setPos(pos: Vec2) {
     this.circle.pos = pos.add(new Vec2(this.radius, this.radius))
+    this.respawnPos = pos
+  }
+
+  public addCheckPoint(pos: Vec2): void {
+    this.checkPoints.push(pos)
   }
 
   public draw() {
@@ -195,6 +202,17 @@ export default class Player {
         }
         break
       }
+    }
+
+    for (let checkPoint of this.checkPoints) {
+      if (this.circle.pos.x > checkPoint.x && checkPoint.x > this.respawnPos.x) {
+        this.respawnPos = checkPoint
+      }
+    }
+
+    if (this.circle.pos.y > 1200 || this.circle.pos.y < -300) {
+      this.circle.pos = this.respawnPos
+      Camera.move(new Vec2(Camera.getDistFromCetnerX(this.circle.pos), 0))
     }
   }
 }
