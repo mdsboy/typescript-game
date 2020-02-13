@@ -3,8 +3,8 @@ import DrawManager from './drawManager'
 
 import Rect from './rect'
 import Vec2 from './vec2'
-import Color from './color';
-import Camera from './camera';
+import Color from './color'
+import Camera from './camera'
 
 export default class SceneManager {
   private static current: SceneBase

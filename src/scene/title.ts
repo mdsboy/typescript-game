@@ -1,11 +1,11 @@
-import Vec2 from 'lib/vec2';
+import Vec2 from 'lib/vec2'
 
 import DrawManager from 'lib/drawManager'
 import { InputKey, KeyCode } from 'lib/inputKey'
 
 import SceneBase from 'lib/sceneBase'
 import Game from './game/game'
-import Color from 'lib/color';
+import Color from 'lib/color'
 
 export default class Title implements SceneBase {
   constructor() {
@@ -17,7 +17,7 @@ export default class Title implements SceneBase {
 
   public update(): SceneBase {
     if (InputKey.isKeyDown(KeyCode.A)) {
-        return new Game()
+      return new Game()
     }
     return this
   }

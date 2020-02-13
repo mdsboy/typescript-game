@@ -1,5 +1,5 @@
 import Vec2 from './vec2'
-import SceneManager from './sceneManager';
+import SceneManager from './sceneManager'
 
 export class InputMouse {
   private static mouseInput: Array<boolean> = Array(2)

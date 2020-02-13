@@ -40,4 +40,13 @@ export default class Vec2 {
   public static cosSin(radian: number): Vec2 {
     return new Vec2(Math.cos(radian), Math.sin(radian))
   }
+
+  public deepCopy(): Vec2 {
+    return new Vec2(this.x, this.y)
+  }
+
+  public normalize(): Vec2 {
+    const d = this.dist(Vec2.zero)
+    return new Vec2(this.x / d, this.y / d)
+  }
 }

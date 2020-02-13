@@ -25,13 +25,10 @@ export default class Player {
   private checkPoints: Array<Vec2> = []
   private respawnPos: Vec2
   private tracing: Array<Vec2> = []
-  private count: number
-  private interval = 1
-  private traceLength = 60
+  private readonly traceLength = 300
 
   constructor() {
     this.circle = new Circle(Vec2.zero, this.radius)
-    this.count = 0
   }
 
   public setPos(pos: Vec2) {
@@ -45,7 +42,9 @@ export default class Player {
 
   public draw() {
     for (let i = 0; i < this.tracing.length; i++) {
-      dm.fillCircle(new Circle(this.tracing[i], this.radius), Color.red_color(255, (0.5 / this.traceLength) * i))
+      dm.fillCircle(new Circle(
+        this.tracing[i], this.radius),
+        Color.red_color(255, (0.1 / this.tracing.length) * i))
     }
     if (this.rotateCircle) {
       this.rotateCircle.draw(this.angle)
@@ -65,15 +64,7 @@ export default class Player {
   }
 
   public update(entities: Array<Entity>): void {
-    this.count++
-    // 中央を記録
-    if (this.count % this.interval == 0) {
-      this.count = 0
-      if (this.tracing.length >= this.traceLength) {
-        this.tracing.shift()
-      }
-      this.tracing.push(this.circle.pos)
-    }
+    this.trace()
 
     if (InputMouse.isMouseLeftDown()) {
       if (this.rotateCircle == null) {
@@ -87,6 +78,23 @@ export default class Player {
     }
     if (this.centerEntity == null) {
       this.notRotate(entities)
+    }
+  }
+
+  private trace(): void {
+    while (this.tracing.length >= this.traceLength) {
+      this.tracing.shift()
+    }
+    if (this.tracing.length == 0) {
+      this.tracing.push(this.circle.pos.deepCopy())
+    } else {
+      const last = this.tracing[this.tracing.length - 1]
+      const vec = this.circle.pos.sub(last)
+      const norm = vec.normalize()
+      for (let i = 1; i < vec.dist(Vec2.zero); i += 5) {
+        this.tracing.push(last.add(norm.scalarMul(i)))
+      }
+      this.tracing.shift()
     }
   }
 

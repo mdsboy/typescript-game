@@ -1,6 +1,6 @@
 import Vec2 from './vec2'
-import Rect from './rect';
-import DrawManager from './drawManager';
+import Rect from './rect'
+import DrawManager from './drawManager'
 
 export default class Circle {
   public pos: Vec2
