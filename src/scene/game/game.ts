@@ -26,7 +26,52 @@ export default class Game implements SceneBase {
     this.load()
   }
 
-  public load() {
+  private loadBlock(s: string, x: number, y: number) {
+    switch (s) {
+      case 'p':
+        const pos = new Vec2(x, y)
+        this.player.setPos(pos)
+        Camera.move(new Vec2(Camera.getDistFromCetnerX(pos), 0))
+        break
+      case 'c':
+        this.player.addCheckPoint(new Vec2(x, y))
+        break;
+      case 'br':
+        this.entities.push(
+          new Block(
+            new Vec2(x, y),
+            true,
+            false
+          )
+        )
+        break
+      case 'bl':
+        this.entities.push(
+          new Block(
+            new Vec2(x, y),
+            false,
+            false
+          )
+        )
+        break
+      case 'tr':
+        this.entities.push(
+          new Block(
+            new Vec2(x, y),
+            true,
+            true
+          )
+        )
+        break
+      case 'mbr':
+        this.entities.push(
+          new moveBlock(new Vec2(x, y))
+        )
+        break
+    }
+  }
+
+  private load() {
     fetch('stage1.csv', {
       method: 'GET'
     })
@@ -37,48 +82,7 @@ export default class Game implements SceneBase {
         csv.parse(text, (err: Error, stage: Array<Array<string>>) => {
           for (let i = 0; i < stage.length; i++) {
             for (let j = 0; j < stage[i].length; j++) {
-              switch (stage[i][j]) {
-                case 'p':
-                  const pos = new Vec2(j * Block.size, i * Block.size)
-                  this.player.setPos(pos)
-                  Camera.move(new Vec2(Camera.getDistFromCetnerX(pos), 0))
-                  break
-                case 'c':
-                  this.player.addCheckPoint(new Vec2(j * Block.size, i * Block.size))
-                  break;
-                case 'br':
-                  this.entities.push(
-                    new Block(
-                      new Vec2(j * Block.size, i * Block.size),
-                      true,
-                      false
-                    )
-                  )
-                  break
-                case 'bl':
-                  this.entities.push(
-                    new Block(
-                      new Vec2(j * Block.size, i * Block.size),
-                      false,
-                      false
-                    )
-                  )
-                  break
-                case 'tr':
-                  this.entities.push(
-                    new Block(
-                      new Vec2(j * Block.size, i * Block.size),
-                      true,
-                      true
-                    )
-                  )
-                  break
-                case 'mbr':
-                  this.entities.push(
-                    new moveBlock(new Vec2(j * Block.size, i * Block.size))
-                  )
-                  break
-              }
+              this.loadBlock(stage[i][j], j * Block.size, i * Block.size)
             }
           }
           this.loadFinished = true

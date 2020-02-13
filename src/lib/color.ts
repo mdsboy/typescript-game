@@ -1,5 +1,3 @@
-import { threadId } from 'worker_threads'
-
 export default class Color {
   public r: number
   public g: number

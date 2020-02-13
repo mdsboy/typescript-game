@@ -6,7 +6,6 @@ import Color from 'lib/color'
 import Circle from 'lib/circle'
 
 import { degreeToRadian } from 'lib/util'
-import { threadId } from 'worker_threads'
 
 export default class Block implements Entity {
   public static size: number
