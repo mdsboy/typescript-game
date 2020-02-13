@@ -8,9 +8,11 @@ import { radianToDegree, degreeToRadian } from 'lib/util'
 import Vec2 from 'lib/vec2'
 import Circle from 'lib/circle'
 import Color from 'lib/color'
-import Entity from './entity'
+import Entity from './moveEntity'
 import Camera from 'lib/camera'
 import RotateCircle from './rotateCircle'
+import RotateEntity from './rotateEntity'
+import Entities from './entities'
 
 export default class Player {
   private readonly speed = 10
@@ -20,7 +22,7 @@ export default class Player {
   private ay = 0
   private readonly radius = 25
   private angleSpeed = 1.0
-  private centerEntity: Entity | null = null
+  private centerEntity: RotateEntity | null = null
   private rotateCircle: RotateCircle | null = null
   private checkPoints: Array<Vec2> = []
   private respawnPos: Vec2
@@ -63,7 +65,7 @@ export default class Player {
     }
   }
 
-  public update(entities: Array<Entity>): void {
+  public update(entities: Entities): void {
     this.trace()
 
     if (InputMouse.isMouseLeftDown()) {
@@ -98,19 +100,14 @@ export default class Player {
     }
   }
 
-  private rotateStart(entities: Array<Entity>): void {
+  private rotateStart(entities: Entities): void {
     const center = Camera.getMousePosInCamera()
 
     if (this.circle.inVec2(center)) {
       return
     }
 
-    this.centerEntity = null
-    for (let entity of entities) {
-      if (entity.getIsCenter(center)) {
-        this.centerEntity = entity
-      }
-    }
+    this.centerEntity = entities.getCenter(center)
 
     if (this.centerEntity) {
       this.centerEntity.rotateStart(center)
@@ -137,7 +134,7 @@ export default class Player {
     this.angleSpeed = 1.0
   }
 
-  private rotate(entities: Array<Entity>): void {
+  private rotate(entities: Entities): void {
     if (this.rotateCircle == null) {
       return
     }
@@ -162,12 +159,9 @@ export default class Player {
       .add(Vec2.cosSin(degreeToRadian(this.angle)).scalarMul(this.len))
 
     if (this.centerEntity && !this.centerEntity.transparent()) {
-      for (let entity of entities) {
-        if (entity.collide(this.circle)) {
-          this.circle.pos = prevPos
-          this.rotateEnd(entities)
-          return
-        }
+      if (entities.isCollide(this.circle)) {
+        this.circle.pos = prevPos
+        this.rotateEnd(entities)
       }
     }
     /*
@@ -176,16 +170,12 @@ export default class Player {
     )*/
   }
 
-  private rotateEnd(entities: Array<Entity>): void {
+  private rotateEnd(entities: Entities): void {
     this.angle = 0
 
     if (this.centerEntity && this.centerEntity.transparent()) {
-      for (let entity of entities) {
-        if (entity.collide(this.circle)) {
-          if (this.rotateCircle) {
-            this.circle.pos = this.rotateCircle.getStartPos()
-          }
-        }
+      if (this.rotateCircle && entities.isCollide(this.circle)) {
+        this.circle.pos = this.rotateCircle.getStartPos()
       }
     }
     this.rotateCircle = null
@@ -196,12 +186,10 @@ export default class Player {
     this.centerEntity = null
   }
 
-  private notRotate(entities: Array<Entity>): void {
+  private notRotate(entities: Entities): void {
     Camera.move(new Vec2(Camera.getDistFromCetnerX(this.circle.pos) / 50.0, 0))
 
-    for (let entity of entities) {
-      entity.getIsCenter(Camera.getMousePosInCamera())
-    }
+    entities.getIsCenter(Camera.getMousePosInCamera())
 
     let vec = new Vec2(0, 0)
 
@@ -219,14 +207,11 @@ export default class Player {
 
     Camera.move(new Vec2(vec.x, 0))
 
-    for (let entity of entities) {
-      if (entity.collide(this.circle)) {
-        this.circle.pos.subAssign(vec)
-        Camera.move(new Vec2(-vec.x, 0))
-        if (vec.y > 0) {
-          this.ay = 0
-        }
-        break
+    if (entities.isCollide(this.circle)) {
+      this.circle.pos.subAssign(vec)
+      Camera.move(new Vec2(-vec.x, 0))
+      if (vec.y > 0) {
+        this.ay = 0
       }
     }
 

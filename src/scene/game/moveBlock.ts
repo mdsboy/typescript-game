@@ -1,68 +1,49 @@
-import Entity from './entity'
+import MoveEntity from './moveEntity'
 import Rect from 'lib/rect'
 import Vec2 from 'lib/vec2'
 import dm from 'lib/drawManager'
 import Color from 'lib/color'
 import Circle from 'lib/circle'
-import Camera from 'lib/camera'
 
-export default class moveBlock implements Entity {
+import { degreeToRadian } from 'lib/util'
+
+export default class MoveBlock implements MoveEntity {
   public static size: number
   private rect: Rect
   private isCenter: boolean
   private centerPos: Vec2
-  private vec: Vec2
 
   constructor(pos: Vec2) {
-    this.rect = new Rect(pos, moveBlock.size, moveBlock.size)
-    this.vec = new Vec2(3, 0)
+    this.rect = new Rect(pos, MoveBlock.size, MoveBlock.size)
   }
 
   public draw(): void {
-    dm.fillRect(this.rect, new Color(200, 200, 200))
+    dm.fillRect(this.rect, new Color(100, 100, 100))
     dm.strokeRect(this.rect, Color.blue, 3)
-
-    if (this.isCenter) {
-      dm.fillRect(this.rect, new Color(100, 0, 0, 0.8))
-    }
   }
-  public update(_entities: Array<Entity>): void {
-    if (this.isCenter) {
-      Camera.move(this.vec)
-    }
-    this.move(this.vec)
+  public update(): void {
   }
 
   public move(v: Vec2): void {
     this.rect.pos.addAssign(v)
   }
 
-  public rotateStart(center: Vec2): void {
-    this.isCenter = true
-    this.centerPos = center.sub(this.rect.pos)
+  public moveStart(center: Vec2): void {
   }
 
-  public rotateEnd(): void {
-    this.isCenter = false
+  public moveEnd(): void {
   }
 
   public getIsCenter(center: Vec2): boolean {
-    return this.rect.inVec2(center)
+    this.isCenter = this.rect.inVec2(center)
+    return this.isCenter
   }
 
   public getCenterPos(): Vec2 {
     return this.centerPos.add(this.rect.pos)
   }
 
-  public rotateDir(): boolean {
-    return true
-  }
-
   public collide(circle: Circle): boolean {
     return circle.collideRect(this.rect)
-  }
-
-  public transparent(): boolean {
-    return false
   }
 }

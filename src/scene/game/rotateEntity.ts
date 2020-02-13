@@ -1,9 +1,9 @@
 import Vec2 from 'lib/vec2'
 import Circle from 'lib/circle'
 
-export default interface Entity {
+export default interface RotateEntity {
   draw(): void
-  update(entities: Array<Entity>): void
+  update(): void
 
   move(v: Vec2): void
 

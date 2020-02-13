@@ -1,4 +1,4 @@
-import Entity from './entity'
+import RotateEntity from './rotateEntity'
 import Rect from 'lib/rect'
 import Vec2 from 'lib/vec2'
 import dm from 'lib/drawManager'
@@ -7,7 +7,7 @@ import Circle from 'lib/circle'
 
 import { degreeToRadian } from 'lib/util'
 
-export default class Block implements Entity {
+export default class RotateBlock implements RotateEntity {
   public static size: number
   private rect: Rect
   private circle: Circle
@@ -20,8 +20,8 @@ export default class Block implements Entity {
   private readonly angleSpeed = 0.5
 
   constructor(pos: Vec2, dir: boolean, trans: boolean) {
-    this.rect = new Rect(pos, Block.size, Block.size)
-    this.circle = new Circle(pos, Block.size / 3)
+    this.rect = new Rect(pos, RotateBlock.size, RotateBlock.size)
+    this.circle = new Circle(pos, RotateBlock.size / 3)
     this.dir = dir
     this.trans = trans
   }
@@ -40,7 +40,7 @@ export default class Block implements Entity {
     }
 
     this.circle.pos = this.rect.pos.add(
-      new Vec2(Block.size / 2, Block.size / 2)
+      new Vec2(RotateBlock.size / 2, RotateBlock.size / 2)
     )
 
     if (this.dir) {
@@ -120,7 +120,7 @@ export default class Block implements Entity {
       )
     }
   }
-  public update(_entities: Array<Entity>): void {
+  public update(): void {
     if (this.dir) {
       this.angle1 += this.angleSpeed
       this.angle2 += this.angleSpeed

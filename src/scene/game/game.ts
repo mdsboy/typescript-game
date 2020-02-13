@@ -2,26 +2,31 @@ import SceneBase from 'lib/sceneBase'
 
 import Player from './player'
 import Vec2 from 'lib/vec2'
-import Block from './block'
-import Entity from './entity'
-import moveBlock from './moveBlock'
+import MoveBlock from './moveBlock'
+import MoveEntity from './moveEntity'
+import RotateMoveBlock from './rotateMoveBlock'
 import DrawManager from 'lib/drawManager'
 import Camera from 'lib/camera'
 import Rect from 'lib/rect'
 import SceneManager from 'lib/sceneManager'
+import RotateEntity from './rotateEntity'
+import RotateBlock from './rotateBlock'
+import Entities from './entities'
 
 const csv = require('csv')
 
 export default class Game implements SceneBase {
   private player: Player
-  private entities: Array<Entity> = []
+  private entities: Entities
   private loadFinished = false
 
   constructor() {
     this.player = new Player()
+    this.entities = new Entities()
 
-    Block.size = 50
-    moveBlock.size = 50
+    MoveBlock.size = 50
+    RotateBlock.size = 50
+    RotateMoveBlock.size = 50
 
     this.load()
   }
@@ -37,8 +42,8 @@ export default class Game implements SceneBase {
         this.player.addCheckPoint(new Vec2(x, y))
         break;
       case 'br':
-        this.entities.push(
-          new Block(
+        this.entities.addRotateEntity(
+          new RotateBlock(
             new Vec2(x, y),
             true,
             false
@@ -46,8 +51,8 @@ export default class Game implements SceneBase {
         )
         break
       case 'bl':
-        this.entities.push(
-          new Block(
+        this.entities.addRotateEntity(
+          new RotateBlock(
             new Vec2(x, y),
             false,
             false
@@ -55,8 +60,8 @@ export default class Game implements SceneBase {
         )
         break
       case 'tr':
-        this.entities.push(
-          new Block(
+        this.entities.addRotateEntity(
+          new RotateBlock(
             new Vec2(x, y),
             true,
             true
@@ -64,8 +69,8 @@ export default class Game implements SceneBase {
         )
         break
       case 'mbr':
-        this.entities.push(
-          new moveBlock(new Vec2(x, y))
+        this.entities.addMoveEntity(
+          new MoveBlock(new Vec2(x, y))
         )
         break
     }
@@ -82,7 +87,7 @@ export default class Game implements SceneBase {
         csv.parse(text, (err: Error, stage: Array<Array<string>>) => {
           for (let i = 0; i < stage.length; i++) {
             for (let j = 0; j < stage[i].length; j++) {
-              this.loadBlock(stage[i][j], j * Block.size, i * Block.size)
+              this.loadBlock(stage[i][j], j * MoveBlock.size, i * MoveBlock.size)
             }
           }
           this.loadFinished = true
@@ -107,10 +112,7 @@ export default class Game implements SceneBase {
 
     DrawManager.setCameraPos(Camera.getCameraPos())
 
-    for (let entity of this.entities) {
-      entity.draw()
-    }
-
+    this.entities.draw()
     this.player.draw()
 
     DrawManager.setCameraPos(Vec2.zero)
@@ -121,9 +123,7 @@ export default class Game implements SceneBase {
       return this
     }
 
-    for (let entity of this.entities) {
-      entity.update(this.entities)
-    }
+    this.entities.update()
     this.player.update(this.entities)
 
     return this
