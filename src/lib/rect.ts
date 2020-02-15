@@ -1,6 +1,5 @@
 import Vec2 from './vec2'
 import { between } from './util'
-import Circle from './circle'
 
 export default class Rect {
   public pos: Vec2

@@ -5,8 +5,6 @@ import dm from 'lib/drawManager'
 import Color from 'lib/color'
 import Circle from 'lib/circle'
 
-import { degreeToRadian } from 'lib/util'
-
 export default class RotateBlock implements RotateEntity {
   public static size: number
   private rect: Rect
@@ -44,13 +42,7 @@ export default class RotateBlock implements RotateEntity {
     )
 
     if (this.dir) {
-      dm.strokeArc(
-        this.circle,
-        degreeToRadian(this.angle1),
-        degreeToRadian(this.angle2),
-        Color.white,
-        2
-      )
+      dm.strokeArc(this.circle, this.angle1, this.angle2, Color.white, 2)
 
       const startPos = this.circle.pos.add(
         Vec2.cosSin(this.angle2).scalarMul(this.circle.radius)
@@ -68,13 +60,7 @@ export default class RotateBlock implements RotateEntity {
         2
       )
     } else {
-      dm.strokeArc(
-        this.circle,
-        degreeToRadian(this.angle1),
-        degreeToRadian(this.angle2),
-        Color.white,
-        2
-      )
+      dm.strokeArc(this.circle, this.angle1, this.angle2, Color.white, 2)
 
       const startPos = this.circle.pos.add(
         Vec2.cosSin(this.angle1).scalarMul(this.circle.radius)
@@ -82,17 +68,13 @@ export default class RotateBlock implements RotateEntity {
 
       dm.line(
         startPos,
-        startPos.add(
-          Vec2.cosSin(this.angle1 + 60).scalarMul(10)
-        ),
+        startPos.add(Vec2.cosSin(this.angle1 + 60).scalarMul(10)),
         Color.white,
         2
       )
       dm.line(
         startPos,
-        startPos.add(
-          Vec2.cosSin(this.angle1 + 150).scalarMul(10)
-        ),
+        startPos.add(Vec2.cosSin(this.angle1 + 150).scalarMul(10)),
         Color.white,
         2
       )

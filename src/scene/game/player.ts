@@ -3,7 +3,7 @@ import { InputMouse } from 'lib/inputMouse'
 
 import dm from 'lib/drawManager'
 
-import { radianToDegree, degreeToRadian } from 'lib/util'
+import { radianToDegree } from 'lib/util'
 
 import Vec2 from 'lib/vec2'
 import Circle from 'lib/circle'

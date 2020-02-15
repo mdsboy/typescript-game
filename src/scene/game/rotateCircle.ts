@@ -1,7 +1,6 @@
 import Circle from 'lib/circle'
 import dm from 'lib/drawManager'
 import Color from 'lib/color'
-import { degreeToRadian } from 'lib/util'
 import Vec2 from 'lib/vec2'
 
 export default class RotateCircle {
@@ -64,8 +63,8 @@ export default class RotateCircle {
           this.circle.pos,
           this.circle.radius - this.start_circle.radius
         ),
-        degreeToRadian(this.start_angle),
-        degreeToRadian(end_angle),
+        this.start_angle,
+        end_angle,
         Color.black_color(0.8),
         3
       )
@@ -74,8 +73,8 @@ export default class RotateCircle {
           this.circle.pos,
           this.circle.radius + this.start_circle.radius
         ),
-        degreeToRadian(this.start_angle),
-        degreeToRadian(end_angle),
+        this.start_angle,
+        end_angle,
         Color.black_color(0.8),
         3
       )
@@ -85,8 +84,8 @@ export default class RotateCircle {
           this.circle.pos,
           this.circle.radius - this.start_circle.radius
         ),
-        degreeToRadian(end_angle),
-        degreeToRadian(this.start_angle),
+        end_angle,
+        this.start_angle,
         Color.black_color(0.8),
         3
       )
@@ -95,8 +94,8 @@ export default class RotateCircle {
           this.circle.pos,
           this.circle.radius + this.start_circle.radius
         ),
-        degreeToRadian(end_angle),
-        degreeToRadian(this.start_angle),
+        end_angle,
+        this.start_angle,
         Color.black_color(0.8),
         3
       )

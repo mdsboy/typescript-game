@@ -5,6 +5,7 @@ import Circle from './circle'
 import Color from './color'
 import Camera from './camera'
 import SceneManager from './sceneManager'
+import { degreeToRadian } from './util'
 
 export default class DrawManager {
   public static ctx: CanvasRenderingContext2D
@@ -92,13 +93,13 @@ export default class DrawManager {
 
   public static strokeArc(
     circle: Circle,
-    start: number,
-    end: number,
+    startDeg: number,
+    endDeg: number,
     color: Color | CanvasGradient,
     width: number = 1
   ) {
     this.ctx.beginPath()
-    this.circle(circle, start, end)
+    this.circle(circle, degreeToRadian(startDeg), degreeToRadian(endDeg))
     this.strokeDraw(color, width)
   }
 
