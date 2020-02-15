@@ -12,6 +12,7 @@ import SceneManager from 'lib/sceneManager'
 import RotateEntity from './rotateEntity'
 import RotateBlock from './rotateBlock'
 import Entities from './entities'
+import Color from 'lib/color'
 
 const csv = require('csv')
 
@@ -19,14 +20,15 @@ export default class Game implements SceneBase {
   private player: Player
   private entities: Entities
   private loadFinished = false
+  private readonly blockSize = 50
 
   constructor() {
     this.player = new Player()
     this.entities = new Entities()
 
-    MoveBlock.size = 50
-    RotateBlock.size = 50
-    RotateMoveBlock.size = 50
+    MoveBlock.size = this.blockSize
+    RotateBlock.size = this.blockSize
+    RotateMoveBlock.size = this.blockSize
 
     this.load()
   }
@@ -100,22 +102,32 @@ export default class Game implements SceneBase {
     if (!this.loadFinished) {
       return
     }
+
+    DrawManager.clear()
+
     let gradient = DrawManager.ctx.createLinearGradient(
       0,
       0,
-      SceneManager.getScreen().width,
+      Camera.getCameraRect().width,
       0
     )
     gradient.addColorStop(0.0, 'rgba(255, 255, 255, 0.3)')
     gradient.addColorStop(1.0, 'rgba(0, 0, 0, 0.3)')
-    DrawManager.fillRect(SceneManager.getScreen(), gradient)
 
     DrawManager.setCameraPos(Camera.getCameraPos())
+    DrawManager.clear()
+    DrawManager.fillRect(Camera.getCameraRect(), gradient)
+
+    for (let x = - Camera.getCameraPos().x % this.blockSize; x < Camera.getCameraRect().width; x += MoveBlock.size) {
+      for (let y = - Camera.getCameraPos().y % this.blockSize; y < Camera.getCameraRect().height; y += MoveBlock.size) {
+        DrawManager.strokeRect(new Rect(new Vec2(Camera.getCameraPos().x + x, Camera.getCameraPos().y + y), this.blockSize, this.blockSize), new Color(0, 0, 0, 0.1));
+      }
+    }
 
     this.entities.draw()
     this.player.draw()
 
-    DrawManager.setCameraPos(Vec2.zero)
+    DrawManager.setCameraPos(Vec2.zero())
   }
 
   public update(): SceneBase {

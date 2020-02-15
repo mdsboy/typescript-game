@@ -19,4 +19,9 @@ export default class Rect {
       between(this.pos.y, pos.y, this.pos.y + this.height)
     )
   }
+
+  public collideRect(rect: Rect): boolean {
+    return Math.abs(rect.pos.x - this.pos.x) < rect.width + this.width / 2 &&
+      Math.abs(rect.pos.y - this.pos.y) < rect.height + this.height / 2
+  }
 }

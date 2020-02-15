@@ -3,10 +3,13 @@ import Vec2 from './vec2'
 import Rect from './rect'
 import Circle from './circle'
 import Color from './color'
+import Camera from './camera'
+import SceneManager from './sceneManager'
 
 export default class DrawManager {
   public static ctx: CanvasRenderingContext2D
   private static cameraPos: Vec2
+  private static cameraRect: Rect
 
   public static init(width: number, height: number) {
     const canvas = document.createElement('canvas')
@@ -25,14 +28,21 @@ export default class DrawManager {
     this.cameraPos = new Vec2(0, 0)
   }
 
+  public static clear(): void {
+    DrawManager.fillRect(Camera.getCameraRect(), Color.white)
+    DrawManager.strokeRect(Camera.getCameraRect(), Color.black, 3)
+  }
+
   public static setCameraPos(vec: Vec2) {
     this.cameraPos = vec
   }
 
   public static fillRect(rect: Rect, color: Color | CanvasGradient) {
-    this.ctx.beginPath()
-    this.rect(rect)
-    this.fillDraw(color)
+    if (rect.collideRect(Camera.getCameraRect())) {
+      this.ctx.beginPath()
+      this.rect(rect)
+      this.fillDraw(color)
+    }
   }
 
   public static strokeRect(
@@ -40,9 +50,11 @@ export default class DrawManager {
     color: Color | CanvasGradient,
     width: number = 1
   ) {
-    this.ctx.beginPath()
-    this.rect(rect)
-    this.strokeDraw(color, width)
+    if (rect.collideRect(Camera.getCameraRect())) {
+      this.ctx.beginPath()
+      this.rect(rect)
+      this.strokeDraw(color, width)
+    }
   }
 
   private static rect(rect: Rect) {

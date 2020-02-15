@@ -31,6 +31,7 @@ document.onmousemove = e => {
 }
 
 document.onmousedown = () => {
+  console.log(SceneManager.getScreen())
   if (SceneManager.getScreen().inVec2(InputMouse.getMousepos())) {
     InputMouse.mouseDown()
   }

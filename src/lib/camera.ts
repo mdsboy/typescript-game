@@ -1,34 +1,36 @@
 import Vec2 from './vec2'
 import { InputMouse } from './inputMouse'
+import Rect from './rect'
+import DrawManager from './drawManager'
 
 export default class Camera {
-  private static pos: Vec2
-  private static width: number
-  private static height: number
+  private static rect: Rect
 
   public static init(width: number, height: number) {
-    this.pos = new Vec2(0, 0)
-    this.width = width
-    this.height = height
+    this.rect = new Rect(Vec2.zero(), width, height)
   }
 
   public static getCameraPos(): Vec2 {
-    return this.pos
+    return this.rect.pos
   }
 
   public static move(v: Vec2): void {
-    this.pos.addAssign(v)
+    this.rect.pos.addAssign(v)
   }
 
   public static getPosInCamera(v: Vec2): Vec2 {
-    return v.sub(this.pos)
+    return v.sub(this.rect.pos)
   }
 
   public static getMousePosInCamera(): Vec2 {
-    return InputMouse.getMousepos().add(this.pos)
+    return InputMouse.getMousepos().add(this.rect.pos)
   }
 
   public static getDistFromCetnerX(v: Vec2): number {
-    return this.getPosInCamera(v).x - this.width / 2
+    return this.getPosInCamera(v).x - this.rect.width / 2
+  }
+
+  public static getCameraRect(): Rect {
+    return this.rect
   }
 }

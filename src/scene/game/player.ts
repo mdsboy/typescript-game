@@ -30,7 +30,7 @@ export default class Player {
   private readonly traceLength = 300
 
   constructor() {
-    this.circle = new Circle(Vec2.zero, this.radius)
+    this.circle = new Circle(Vec2.zero(), this.radius)
   }
 
   public setPos(pos: Vec2) {
@@ -93,7 +93,7 @@ export default class Player {
       const last = this.tracing[this.tracing.length - 1]
       const vec = this.circle.pos.sub(last)
       const norm = vec.normalize()
-      for (let i = 1; i < vec.dist(Vec2.zero); i += 5) {
+      for (let i = 1; i < vec.dist(Vec2.zero()); i += 5) {
         this.tracing.push(last.add(norm.scalarMul(i)))
       }
       this.tracing.shift()
