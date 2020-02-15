@@ -72,7 +72,7 @@ export default class Game implements SceneBase {
         break
       case 'mbr':
         this.entities.addMoveEntity(
-          new MoveBlock(new Vec2(x, y))
+          new MoveBlock(new Vec2(x, y), 30)
         )
         break
     }

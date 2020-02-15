@@ -12,14 +12,41 @@ export default class MoveBlock implements MoveEntity {
   private rect: Rect
   private isCenter: boolean
   private centerPos: Vec2
+  private angle: number
 
-  constructor(pos: Vec2) {
+  constructor(pos: Vec2, angle: number) {
     this.rect = new Rect(pos, MoveBlock.size, MoveBlock.size)
+    this.angle = angle
   }
 
   public draw(): void {
     dm.fillRect(this.rect, new Color(100, 100, 100))
     dm.strokeRect(this.rect, Color.blue, 3)
+    const center = this.rect.pos.add(new Vec2(this.rect.width / 2, this.rect.height / 2))
+    const startPos = new Vec2(center.x, center.y).sub(
+      Vec2.cosSin(this.angle).scalarMul(MoveBlock.size / 3)
+    )
+    const endPos = new Vec2(center.x, center.y).add(
+      Vec2.cosSin(this.angle).scalarMul(MoveBlock.size / 3)
+    )
+    dm.line(startPos, endPos,
+      Color.white,
+      2
+    )
+    dm.line(endPos,
+      endPos.add(
+        Vec2.cosSin(this.angle + 225).scalarMul(10)
+      ),
+      Color.white,
+      2
+    )
+    dm.line(endPos,
+      endPos.add(
+        Vec2.cosSin(this.angle + 135).scalarMul(10)
+      ),
+      Color.white,
+      2
+    )
   }
   public update(): void {
   }

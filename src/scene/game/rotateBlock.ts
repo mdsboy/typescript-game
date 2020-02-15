@@ -53,30 +53,17 @@ export default class RotateBlock implements RotateEntity {
       )
 
       const startPos = this.circle.pos.add(
-        new Vec2(
-          Math.cos(degreeToRadian(this.angle2)),
-          Math.sin(degreeToRadian(this.angle2))
-        ).scalarMul(this.circle.radius)
+        Vec2.cosSin(this.angle2).scalarMul(this.circle.radius)
       )
       dm.line(
         startPos,
-        startPos.add(
-          new Vec2(
-            Math.cos(degreeToRadian(this.angle2 - 60)),
-            Math.sin(degreeToRadian(this.angle2 - 60))
-          ).scalarMul(10)
-        ),
+        startPos.add(Vec2.cosSin(this.angle2 - 60).scalarMul(10)),
         Color.white,
         2
       )
       dm.line(
         startPos,
-        startPos.add(
-          new Vec2(
-            Math.cos(degreeToRadian(this.angle2 - 150)),
-            Math.sin(degreeToRadian(this.angle2 - 150))
-          ).scalarMul(10)
-        ),
+        startPos.add(Vec2.cosSin(this.angle2 - 150).scalarMul(10)),
         Color.white,
         2
       )
@@ -90,19 +77,13 @@ export default class RotateBlock implements RotateEntity {
       )
 
       const startPos = this.circle.pos.add(
-        new Vec2(
-          Math.cos(degreeToRadian(this.angle1)),
-          Math.sin(degreeToRadian(this.angle1))
-        ).scalarMul(this.circle.radius)
+        Vec2.cosSin(this.angle1).scalarMul(this.circle.radius)
       )
 
       dm.line(
         startPos,
         startPos.add(
-          new Vec2(
-            Math.cos(degreeToRadian(this.angle1 + 60)),
-            Math.sin(degreeToRadian(this.angle1 + 60))
-          ).scalarMul(10)
+          Vec2.cosSin(this.angle1 + 60).scalarMul(10)
         ),
         Color.white,
         2
@@ -110,10 +91,7 @@ export default class RotateBlock implements RotateEntity {
       dm.line(
         startPos,
         startPos.add(
-          new Vec2(
-            Math.cos(degreeToRadian(this.angle1 + 150)),
-            Math.sin(degreeToRadian(this.angle1 + 150))
-          ).scalarMul(10)
+          Vec2.cosSin(this.angle1 + 150).scalarMul(10)
         ),
         Color.white,
         2

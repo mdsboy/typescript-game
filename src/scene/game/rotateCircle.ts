@@ -26,7 +26,7 @@ export default class RotateCircle {
     this.circle.pos = pos
 
     this.start_circle.pos = this.circle.pos.add(
-      Vec2.cosSin(degreeToRadian(this.start_angle)).scalarMul(
+      Vec2.cosSin(this.start_angle).scalarMul(
         this.circle.radius
       )
     )

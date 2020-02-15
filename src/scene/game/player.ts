@@ -156,7 +156,7 @@ export default class Player {
 
     this.circle.pos = this.rotateCircle
       .getPos()
-      .add(Vec2.cosSin(degreeToRadian(this.angle)).scalarMul(this.len))
+      .add(Vec2.cosSin(this.angle).scalarMul(this.len))
 
     if (this.centerEntity && !this.centerEntity.transparent()) {
       if (entities.isCollide(this.circle)) {

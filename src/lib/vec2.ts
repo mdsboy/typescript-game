@@ -1,3 +1,5 @@
+import { degreeToRadian } from "./util"
+
 export default class Vec2 {
   public x: number
   public y: number
@@ -39,8 +41,11 @@ export default class Vec2 {
     return new Vec2(s * this.x, s * this.y)
   }
 
-  public static cosSin(radian: number): Vec2 {
-    return new Vec2(Math.cos(radian), Math.sin(radian))
+  public static cosSin(degree: number): Vec2 {
+    return new Vec2(
+      Math.cos(degreeToRadian(degree)),
+      Math.sin(degreeToRadian(degree))
+    )
   }
 
   public deepCopy(): Vec2 {
