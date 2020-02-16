@@ -6,8 +6,9 @@ import Color from 'lib/color'
 import Circle from 'lib/circle'
 
 import { degreeToRadian } from 'lib/util'
+import Entity from './entity'
 
-export default class MoveBlock implements MoveEntity {
+export default class MoveBlock implements Entity {
   public static size: number
   private rect: Rect
   private isCenter: boolean
@@ -22,6 +23,11 @@ export default class MoveBlock implements MoveEntity {
   public draw(): void {
     dm.fillRect(this.rect, new Color(100, 100, 100))
     dm.strokeRect(this.rect, Color.blue, 3)
+
+    if (this.isCenter) {
+      dm.fillRect(this.rect, new Color(100, 0, 0, 0.8))
+    }
+
     const center = this.rect.pos.add(new Vec2(this.rect.width / 2, this.rect.height / 2))
     const startPos = new Vec2(center.x, center.y).sub(
       Vec2.cosSin(this.angle).scalarMul(MoveBlock.size / 3)
@@ -55,13 +61,13 @@ export default class MoveBlock implements MoveEntity {
     this.rect.pos.addAssign(v)
   }
 
-  public moveStart(center: Vec2): void {
+  public moveStart(circle: Circle, center: Vec2): void {
   }
 
   public moveEnd(): void {
   }
 
-  public getIsCenter(center: Vec2): boolean {
+  public isClicked(center: Vec2): boolean {
     this.isCenter = this.rect.inVec2(center)
     return this.isCenter
   }
@@ -70,7 +76,19 @@ export default class MoveBlock implements MoveEntity {
     return this.centerPos.add(this.rect.pos)
   }
 
-  public collide(circle: Circle): boolean {
+  public getVec2(): Vec2 {
+    return Vec2.cosSin(this.angle)
+  }
+
+  public getStartPos(): Vec2 | null {
+    return null
+  }
+
+  public isCollide(circle: Circle): boolean {
     return circle.collideRect(this.rect)
+  }
+
+  public isTransparent(): boolean {
+    return false;
   }
 }

@@ -41,6 +41,7 @@ export default class RotateCircle {
 
   public draw(end_angle: number): void {
     dm.strokeCircle(this.circle, Color.black_color(0.3), 3)
+
     dm.strokeCircle(
       new Circle(
         this.circle.pos,

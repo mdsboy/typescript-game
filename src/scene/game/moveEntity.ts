@@ -13,5 +13,7 @@ export default interface MoveEntity {
   getIsCenter(center: Vec2): boolean
   getCenterPos(): Vec2
 
+  getVec2(): Vec2
+
   collide(circle: Circle): boolean
 }

@@ -2,42 +2,33 @@ import MoveEntity from "./moveEntity"
 import RotateEntity from "./rotateEntity"
 import Vec2 from "lib/vec2"
 import Circle from "lib/circle"
+import Entity from "./entity"
 
 export default class Entities {
-  private moveEntities: Array<MoveEntity> = []
-  private rotateEntities: Array<RotateEntity> = []
+  private entities: Array<Entity> = []
 
   constructor() { }
 
   public update() {
-    for (let entity of this.rotateEntities) {
+    for (let entity of this.entities) {
       entity.update()
-    }
-    for (let moveEntity of this.moveEntities) {
-      moveEntity.update()
     }
   }
 
   public draw() {
-    for (let rotateEntity of this.rotateEntities) {
-      rotateEntity.draw()
-    }
-    for (let moveEntity of this.moveEntities) {
-      moveEntity.draw()
+    for (let entity of this.entities) {
+      entity.draw()
     }
   }
 
-  public addRotateEntity(entity: RotateEntity) {
-    this.rotateEntities.push(entity);
+
+  public addEntity(entity: Entity) {
+    this.entities.push(entity);
   }
 
-  public addMoveEntity(entity: MoveEntity) {
-    this.moveEntities.push(entity);
-  }
-
-  public getCenter(center: Vec2): RotateEntity | null {
-    for (let entity of this.rotateEntities) {
-      if (entity.getIsCenter(center)) {
+  public getClicked(center: Vec2): Entity | null {
+    for (let entity of this.entities) {
+      if (entity.isClicked(center)) {
         return entity
       }
     }
@@ -45,25 +36,11 @@ export default class Entities {
   }
 
   public isCollide(circle: Circle): boolean {
-    for (let entity of this.rotateEntities) {
-      if (entity.collide(circle)) {
-        return true;
-      }
-    }
-    for (let entity of this.moveEntities) {
-      if (entity.collide(circle)) {
+    for (let entity of this.entities) {
+      if (entity.isCollide(circle)) {
         return true;
       }
     }
     return false;
-  }
-
-  public getIsCenter(center: Vec2) {
-    for (let rotateEntity of this.rotateEntities) {
-      rotateEntity.getIsCenter(center)
-    }
-    for (let moveEntity of this.moveEntities) {
-      moveEntity.getIsCenter(center)
-    }
   }
 }

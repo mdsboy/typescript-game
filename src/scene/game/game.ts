@@ -44,7 +44,7 @@ export default class Game implements SceneBase {
         this.player.addCheckPoint(new Vec2(x, y))
         break;
       case 'br':
-        this.entities.addRotateEntity(
+        this.entities.addEntity(
           new RotateBlock(
             new Vec2(x, y),
             true,
@@ -53,7 +53,7 @@ export default class Game implements SceneBase {
         )
         break
       case 'bl':
-        this.entities.addRotateEntity(
+        this.entities.addEntity(
           new RotateBlock(
             new Vec2(x, y),
             false,
@@ -62,7 +62,7 @@ export default class Game implements SceneBase {
         )
         break
       case 'tr':
-        this.entities.addRotateEntity(
+        this.entities.addEntity(
           new RotateBlock(
             new Vec2(x, y),
             true,
@@ -71,8 +71,8 @@ export default class Game implements SceneBase {
         )
         break
       case 'mbr':
-        this.entities.addMoveEntity(
-          new MoveBlock(new Vec2(x, y), 30)
+        this.entities.addEntity(
+          new MoveBlock(new Vec2(x, y), -30)
         )
         break
     }
