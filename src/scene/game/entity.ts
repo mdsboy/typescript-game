@@ -14,7 +14,7 @@ export default interface Entity {
 
   isClicked(clickPos: Vec2): boolean
 
-  getVec2(circlePos: Vec2): Vec2
+  getNextPos(circlePos: Vec2): Vec2
 
   isCollide(circle: Circle): boolean
   isTransparent(): boolean

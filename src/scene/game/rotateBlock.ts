@@ -13,7 +13,7 @@ export default class RotateBlock implements Entity {
   public static size: number
   private rect: Rect
   private arkCircle: Circle
-  private isCenter: boolean
+  private isTarget: boolean
   private centerPos: Vec2
   private dir: boolean
   private trans: boolean
@@ -42,7 +42,7 @@ export default class RotateBlock implements Entity {
       dm.strokeRect(this.rect, Color.blue, 3)
     }
 
-    if (this.isCenter) {
+    if (this.isTarget) {
       dm.fillRect(this.rect, new Color(100, 0, 0, 0.8))
     }
 
@@ -130,7 +130,7 @@ export default class RotateBlock implements Entity {
   }
 
   public moveEnd(): void {
-    this.isCenter = false
+    this.isTarget = false
 
     this.angle = 0
 
@@ -146,7 +146,7 @@ export default class RotateBlock implements Entity {
   }
 
   public isClicked(center: Vec2): boolean {
-    this.isCenter = this.rect.inVec2(center)
+    this.isTarget = this.rect.inVec2(center)
     return this.rect.inVec2(center)
   }
 
@@ -154,7 +154,7 @@ export default class RotateBlock implements Entity {
     return this.centerPos.add(this.rect.pos)
   }
 
-  public getVec2(circlePos: Vec2): Vec2 {
+  public getNextPos(circlePos: Vec2): Vec2 {
     if (!this.rotateCircle) {
       return circlePos
     }

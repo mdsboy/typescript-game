@@ -11,7 +11,7 @@ import Entity from './entity'
 export default class MoveBlock implements Entity {
   public static size: number
   private rect: Rect
-  private isCenter: boolean
+  private isTarget: boolean
   private centerPos: Vec2
   private angle: number
 
@@ -24,7 +24,7 @@ export default class MoveBlock implements Entity {
     dm.fillRect(this.rect, new Color(100, 100, 100))
     dm.strokeRect(this.rect, Color.blue, 3)
 
-    if (this.isCenter) {
+    if (this.isTarget) {
       dm.fillRect(this.rect, new Color(100, 0, 0, 0.8))
     }
 
@@ -68,16 +68,18 @@ export default class MoveBlock implements Entity {
   }
 
   public isClicked(center: Vec2): boolean {
-    this.isCenter = this.rect.inVec2(center)
-    return this.isCenter
+    this.isTarget = this.rect.inVec2(center)
+    return this.isTarget
   }
 
   public getCenterPos(): Vec2 {
     return this.centerPos.add(this.rect.pos)
   }
 
-  public getVec2(): Vec2 {
-    return Vec2.cosSin(this.angle)
+  public getNextPos(circlePos: Vec2): Vec2 {
+    return circlePos.add(
+      Vec2.cosSin(this.angle).scalarMul(5)
+    )
   }
 
   public getStartPos(): Vec2 | null {

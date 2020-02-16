@@ -111,7 +111,7 @@ export default class Player {
 
     const prevPos = this.circle.pos
 
-    this.circle.pos = this.targetEntity.getVec2(this.circle.pos)
+    this.circle.pos = this.targetEntity.getNextPos(this.circle.pos)
 
     if (this.targetEntity && !this.targetEntity.isTransparent()) {
       if (entities.isCollide(this.circle)) {
