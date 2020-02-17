@@ -1,5 +1,6 @@
 import Vec2 from 'lib/vec2'
 import Circle from 'lib/circle'
+import Color from 'lib/color'
 
 export default interface Entity {
   draw(): void
@@ -18,4 +19,5 @@ export default interface Entity {
 
   isCollide(circle: Circle): boolean
   isTransparent(): boolean
+  getColor(): Color
 }

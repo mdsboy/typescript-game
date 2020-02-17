@@ -36,4 +36,12 @@ export default class Color {
   public toString(): string {
     return 'rgba(' + this.r + ',' + this.g + ',' + this.b + ',' + this.a + ')'
   }
+
+  public getAlphaColor(a: number): Color {
+    return new Color(this.r, this.g, this.b, a)
+  }
+
+  public deepCopy(): Color {
+    return new Color(this.r, this.g, this.b, this.a)
+  }
 }

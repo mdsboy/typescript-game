@@ -2,14 +2,10 @@ import SceneBase from 'lib/sceneBase'
 
 import Player from './player'
 import Vec2 from 'lib/vec2'
-import MoveBlock from './moveBlock'
-import MoveEntity from './moveEntity'
-import RotateMoveBlock from './rotateMoveBlock'
+import TranslateBlock from './translateBlock'
 import DrawManager from 'lib/drawManager'
 import Camera from 'lib/camera'
 import Rect from 'lib/rect'
-import SceneManager from 'lib/sceneManager'
-import RotateEntity from './rotateEntity'
 import RotateBlock from './rotateBlock'
 import Entities from './entities'
 import Color from 'lib/color'
@@ -26,9 +22,8 @@ export default class Game implements SceneBase {
     this.player = new Player()
     this.entities = new Entities()
 
-    MoveBlock.size = this.blockSize
+    TranslateBlock.size = this.blockSize
     RotateBlock.size = this.blockSize
-    RotateMoveBlock.size = this.blockSize
 
     this.load()
   }
@@ -70,9 +65,29 @@ export default class Game implements SceneBase {
           )
         )
         break
-      case 'mbr':
+      case 't0':
         this.entities.addEntity(
-          new MoveBlock(new Vec2(x, y), -45)
+          new TranslateBlock(new Vec2(x, y), 0)
+        )
+        break
+      case 't315':
+        this.entities.addEntity(
+          new TranslateBlock(new Vec2(x, y), 315)
+        )
+        break
+      case 't180':
+        this.entities.addEntity(
+          new TranslateBlock(new Vec2(x, y), 180)
+        )
+        break
+      case 't90':
+        this.entities.addEntity(
+          new TranslateBlock(new Vec2(x, y), 90)
+        )
+        break
+      case 't270':
+        this.entities.addEntity(
+          new TranslateBlock(new Vec2(x, y), 270)
         )
         break
     }
@@ -89,7 +104,7 @@ export default class Game implements SceneBase {
         csv.parse(text, (err: Error, stage: Array<Array<string>>) => {
           for (let i = 0; i < stage.length; i++) {
             for (let j = 0; j < stage[i].length; j++) {
-              this.loadBlock(stage[i][j], j * MoveBlock.size, i * MoveBlock.size)
+              this.loadBlock(stage[i][j], j * TranslateBlock.size, i * TranslateBlock.size)
             }
           }
           this.loadFinished = true
@@ -118,8 +133,8 @@ export default class Game implements SceneBase {
     DrawManager.clear()
     DrawManager.fillRect(Camera.getCameraRect(), gradient)
 
-    for (let x = - Camera.getCameraPos().x % this.blockSize; x < Camera.getCameraRect().width; x += MoveBlock.size) {
-      for (let y = - Camera.getCameraPos().y % this.blockSize; y < Camera.getCameraRect().height; y += MoveBlock.size) {
+    for (let x = - Camera.getCameraPos().x % this.blockSize; x < Camera.getCameraRect().width; x += TranslateBlock.size) {
+      for (let y = - Camera.getCameraPos().y % this.blockSize; y < Camera.getCameraRect().height; y += TranslateBlock.size) {
         DrawManager.strokeRect(new Rect(new Vec2(Camera.getCameraPos().x + x, Camera.getCameraPos().y + y), this.blockSize, this.blockSize), new Color(0, 0, 0, 0.1));
       }
     }

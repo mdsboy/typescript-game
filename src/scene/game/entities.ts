@@ -1,5 +1,3 @@
-import MoveEntity from "./moveEntity"
-import RotateEntity from "./rotateEntity"
 import Vec2 from "lib/vec2"
 import Circle from "lib/circle"
 import Entity from "./entity"
@@ -27,12 +25,13 @@ export default class Entities {
   }
 
   public getClicked(center: Vec2): Entity | null {
+    let clicked = null
     for (let entity of this.entities) {
       if (entity.isClicked(center)) {
-        return entity
+        clicked = entity
       }
     }
-    return null
+    return clicked
   }
 
   public isCollide(circle: Circle): boolean {

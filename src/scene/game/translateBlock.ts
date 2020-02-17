@@ -1,39 +1,39 @@
-import MoveEntity from './moveEntity'
 import Rect from 'lib/rect'
 import Vec2 from 'lib/vec2'
 import dm from 'lib/drawManager'
 import Color from 'lib/color'
 import Circle from 'lib/circle'
-
-import { degreeToRadian } from 'lib/util'
 import Entity from './entity'
 
-export default class MoveBlock implements Entity {
+export default class TranslateBlock implements Entity {
   public static size: number
   private rect: Rect
   private isTarget: boolean
   private centerPos: Vec2
   private angle: number
+  private color: Color
 
   constructor(pos: Vec2, angle: number) {
-    this.rect = new Rect(pos, MoveBlock.size, MoveBlock.size)
+    this.rect = new Rect(pos, TranslateBlock.size, TranslateBlock.size)
     this.angle = angle
   }
 
   public draw(): void {
-    dm.fillRect(this.rect, new Color(100, 100, 100))
-    dm.strokeRect(this.rect, Color.blue, 3)
+    const angleVal = 200 * ((this.angle + 360) % 360 / 360)
+    this.color = new Color(200 - angleVal, 0, angleVal)
+    dm.fillRect(this.rect, this.color.getAlphaColor(0.5))
+    dm.strokeRect(this.rect, this.color, 3)
 
     if (this.isTarget) {
-      dm.fillRect(this.rect, new Color(100, 0, 0, 0.8))
+      dm.fillRect(this.rect, new Color(50, 50, 50, 0.8))
     }
 
     const center = this.rect.pos.add(new Vec2(this.rect.width / 2, this.rect.height / 2))
     const startPos = new Vec2(center.x, center.y).sub(
-      Vec2.cosSin(this.angle).scalarMul(MoveBlock.size / 3)
+      Vec2.cosSin(this.angle).scalarMul(TranslateBlock.size / 3)
     )
     const endPos = new Vec2(center.x, center.y).add(
-      Vec2.cosSin(this.angle).scalarMul(MoveBlock.size / 3)
+      Vec2.cosSin(this.angle).scalarMul(TranslateBlock.size / 3)
     )
     dm.line(startPos, endPos,
       Color.white,
@@ -92,5 +92,9 @@ export default class MoveBlock implements Entity {
 
   public isTransparent(): boolean {
     return false;
+  }
+
+  public getColor(): Color {
+    return this.color
   }
 }

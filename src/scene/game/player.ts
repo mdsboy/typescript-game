@@ -2,16 +2,11 @@ import { InputKey, KeyCode } from 'lib/inputKey'
 import { InputMouse } from 'lib/inputMouse'
 
 import dm from 'lib/drawManager'
-
-import { radianToDegree } from 'lib/util'
-
 import Vec2 from 'lib/vec2'
 import Circle from 'lib/circle'
 import Color from 'lib/color'
 import Entity from './entity'
 import Camera from 'lib/camera'
-import RotateCircle from './rotateCircle'
-import RotateEntity from './rotateEntity'
 import Entities from './entities'
 
 export default class Player {
@@ -22,8 +17,10 @@ export default class Player {
   private targetEntity: Entity | null = null
   private checkPoints: Array<Vec2> = []
   private respawnPos: Vec2
-  private tracing: Array<Vec2> = []
+  private tracing: Array<[Vec2, Color]> = []
   private readonly traceLength = 300
+  private readonly normalColor = new Color(150, 150, 150)
+  private color = this.normalColor
 
   constructor() {
     this.circle = new Circle(Vec2.zero(), this.radius)
@@ -41,16 +38,16 @@ export default class Player {
   public draw() {
     for (let i = 0; i < this.tracing.length; i++) {
       dm.fillCircle(new Circle(
-        this.tracing[i], this.radius),
-        Color.red_color(255, (0.1 / this.tracing.length) * i))
+        this.tracing[i][0], this.radius),
+        this.tracing[i][1].getAlphaColor((0.1 / this.tracing.length) * i))
     }
 
     if (this.targetEntity && this.targetEntity.isTransparent()) {
       dm.fillCircle(this.circle, Color.red_color(200, 0.1))
       dm.strokeCircle(this.circle, Color.red, 3)
     } else {
-      dm.fillCircle(this.circle, Color.red_color(200, 0.7))
-      dm.strokeCircle(this.circle, Color.red, 3)
+      dm.fillCircle(this.circle, this.color.getAlphaColor(0.1))
+      dm.strokeCircle(this.circle, this.color.getAlphaColor(0.7), 3)
     }
   }
 
@@ -77,13 +74,13 @@ export default class Player {
       this.tracing.shift()
     }
     if (this.tracing.length == 0) {
-      this.tracing.push(this.circle.pos.deepCopy())
+      this.tracing.push([this.circle.pos.deepCopy(), this.color.deepCopy()])
     } else {
       const last = this.tracing[this.tracing.length - 1]
-      const vec = this.circle.pos.sub(last)
+      const vec = this.circle.pos.sub(last[0])
       const norm = vec.normalize()
       for (let i = 1; i < vec.dist(Vec2.zero()); i += 5) {
-        this.tracing.push(last.add(norm.scalarMul(i)))
+        this.tracing.push([last[0].add(norm.scalarMul(i)), this.color.deepCopy()])
       }
       this.tracing.shift()
     }
@@ -108,6 +105,8 @@ export default class Player {
     if (this.targetEntity == null) {
       return
     }
+
+    this.color = this.targetEntity.getColor()
 
     const prevPos = this.circle.pos
 
@@ -136,7 +135,8 @@ export default class Player {
   }
 
   private notRotate(entities: Entities): void {
-    Camera.move(new Vec2(Camera.getDistFromCetnerX(this.circle.pos) / 50.0, 0))
+    Camera.move(new Vec2(
+      Camera.getDistFromCetnerX(this.circle.pos.add(new Vec2(300, 0))) / 50.0, 0))
 
     entities.getClicked(Camera.getMousePosInCamera())
 

@@ -1,4 +1,3 @@
-import RotateEntity from './rotateEntity'
 import Rect from 'lib/rect'
 import Vec2 from 'lib/vec2'
 import dm from 'lib/drawManager'
@@ -6,7 +5,6 @@ import Color from 'lib/color'
 import Circle from 'lib/circle'
 import Entity from './entity'
 import RotateCircle from './rotateCircle'
-import Camera from 'lib/camera'
 import { radianToDegree } from 'lib/util'
 
 export default class RotateBlock implements Entity {
@@ -20,6 +18,7 @@ export default class RotateBlock implements Entity {
   private angle1 = 120
   private angle2 = 60
   private readonly angleFirstSpeed = 0.5
+  private color: Color
 
   private angle: number
   private angleSpeed = 1.0
@@ -34,16 +33,21 @@ export default class RotateBlock implements Entity {
   }
 
   public draw(): void {
+    if (this.dir) {
+      this.color = new Color(150, 200, 0);
+    } else {
+      this.color = new Color(0, 200, 150);
+    }
     if (this.trans) {
       dm.fillRect(this.rect, new Color(200, 200, 200))
-      dm.strokeRect(this.rect, Color.blue, 3)
+      dm.strokeRect(this.rect, this.color, 3)
     } else {
-      dm.fillRect(this.rect, new Color(100, 100, 100))
-      dm.strokeRect(this.rect, Color.blue, 3)
+      dm.fillRect(this.rect, this.color.getAlphaColor(0.5))
+      dm.strokeRect(this.rect, this.color, 3)
     }
 
     if (this.isTarget) {
-      dm.fillRect(this.rect, new Color(100, 0, 0, 0.8))
+      dm.fillRect(this.rect, new Color(50, 50, 50, 0.8))
     }
 
     this.arkCircle.pos = this.rect.pos.add(
@@ -178,5 +182,9 @@ export default class RotateBlock implements Entity {
 
   public isTransparent(): boolean {
     return this.trans
+  }
+
+  public getColor(): Color {
+    return this.color
   }
 }

@@ -40,14 +40,14 @@ export default class RotateCircle {
   }
 
   public draw(end_angle: number): void {
-    dm.strokeCircle(this.circle, Color.black_color(0.3), 3)
+    //dm.strokeCircle(this.circle, Color.black_color(0.3), 3)
 
     dm.strokeCircle(
       new Circle(
         this.circle.pos,
         this.circle.radius - this.start_circle.radius
       ),
-      Color.black_color(0.2),
+      Color.black_color(0.1),
       3
     )
     dm.strokeCircle(
@@ -55,57 +55,14 @@ export default class RotateCircle {
         this.circle.pos,
         this.circle.radius + this.start_circle.radius
       ),
-      Color.black_color(0.2),
+      Color.black_color(0.1),
       3
     )
-    if (this.dir) {
-      dm.strokeArc(
-        new Circle(
-          this.circle.pos,
-          this.circle.radius - this.start_circle.radius
-        ),
-        this.start_angle,
-        end_angle,
-        Color.black_color(0.8),
-        3
-      )
-      dm.strokeArc(
-        new Circle(
-          this.circle.pos,
-          this.circle.radius + this.start_circle.radius
-        ),
-        this.start_angle,
-        end_angle,
-        Color.black_color(0.8),
-        3
-      )
-    } else {
-      dm.strokeArc(
-        new Circle(
-          this.circle.pos,
-          this.circle.radius - this.start_circle.radius
-        ),
-        end_angle,
-        this.start_angle,
-        Color.black_color(0.8),
-        3
-      )
-      dm.strokeArc(
-        new Circle(
-          this.circle.pos,
-          this.circle.radius + this.start_circle.radius
-        ),
-        end_angle,
-        this.start_angle,
-        Color.black_color(0.8),
-        3
-      )
-    }
 
-    dm.line(this.circle.pos, this.circle.pos, Color.black_color(0.5), 2)
-    dm.line(this.start_circle.pos, this.circle.pos, Color.black_color(0.5), 2)
-
-    dm.fillCircle(this.start_circle, Color.black_color(0.3))
-    dm.strokeCircle(this.start_circle, Color.black, 3)
+    dm.line(this.circle.pos, this.circle.pos, Color.black_color(0.2), 2)
+    dm.line(this.start_circle.pos, this.circle.pos, Color.black_color(0.2), 2)
+    /*
+        dm.fillCircle(this.start_circle, Color.black_color(0.1))
+        dm.strokeCircle(this.start_circle, Color.black_color(0.5), 3)*/
   }
 }
