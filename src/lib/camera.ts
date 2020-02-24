@@ -23,7 +23,11 @@ export default class Camera {
   }
 
   public static getMousePosInCamera(): Vec2 {
-    return InputMouse.getMousepos().add(this.rect.pos)
+    if (InputMouse.getMousepos()) {
+      return InputMouse.getMousepos().add(this.rect.pos)
+    } else {
+      return Vec2.zero()
+    }
   }
 
   public static getDistFromCetnerX(v: Vec2): number {

@@ -12,6 +12,11 @@ export default class TranslateBlock implements Entity {
   private centerPos: Vec2
   private angle: number
   private color: Color
+  private speed = TranslateBlock.minSpeed
+
+  private static minSpeed = 3
+  private static maxSpeed = 6
+  private static upSpeed = 0.05
 
   constructor(pos: Vec2, angle: number) {
     this.rect = new Rect(pos, TranslateBlock.size, TranslateBlock.size)
@@ -19,13 +24,13 @@ export default class TranslateBlock implements Entity {
   }
 
   public draw(): void {
-    const angleVal = 200 * ((this.angle + 360) % 360 / 360)
-    this.color = new Color(200 - angleVal, 0, angleVal)
-    dm.fillRect(this.rect, this.color.getAlphaColor(0.5))
+    const angleCosSin = Vec2.cosSin(this.angle + 360 - 45).scalarMul(100)
+    this.color = new Color(150 + angleCosSin.x, 0, 150 + angleCosSin.y)
+    dm.fillRect(this.rect, this.color.getAlphaColor(0.4))
     dm.strokeRect(this.rect, this.color, 3)
 
     if (this.isTarget) {
-      dm.fillRect(this.rect, new Color(50, 50, 50, 0.8))
+      dm.fillRect(this.rect, new Color(50, 50, 50, 0.3))
     }
 
     const center = this.rect.pos.add(new Vec2(this.rect.width / 2, this.rect.height / 2))
@@ -54,7 +59,23 @@ export default class TranslateBlock implements Entity {
       2
     )
   }
+
   public update(): void {
+    this.speedUp()
+  }
+
+  protected speedUp(): void { 
+    if (this.isTarget && this.speed < TranslateBlock.maxSpeed) {
+      this.speed += TranslateBlock.upSpeed
+    }
+  }
+
+  protected speedReset(speed: number): void {
+    this.speed = speed
+  }
+
+  protected angleRotate(rotateAngle: number): void {
+    this.angle = (this.angle + rotateAngle) % 360
   }
 
   public move(v: Vec2): void {
@@ -62,6 +83,7 @@ export default class TranslateBlock implements Entity {
   }
 
   public moveStart(circle: Circle, center: Vec2): void {
+    this.speedReset(TranslateBlock.minSpeed)
   }
 
   public moveEnd(): void {
@@ -78,7 +100,7 @@ export default class TranslateBlock implements Entity {
 
   public getNextPos(circlePos: Vec2): Vec2 {
     return circlePos.add(
-      Vec2.cosSin(this.angle).scalarMul(5)
+      Vec2.cosSin(this.angle).scalarMul(this.speed)
     )
   }
 

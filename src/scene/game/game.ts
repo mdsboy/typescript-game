@@ -9,6 +9,7 @@ import Rect from 'lib/rect'
 import RotateBlock from './rotateBlock'
 import Entities from './entities'
 import Color from 'lib/color'
+import TranslateBlockNeo from './translateBlockNeo'
 
 const csv = require('csv')
 
@@ -88,6 +89,11 @@ export default class Game implements SceneBase {
       case 't270':
         this.entities.addEntity(
           new TranslateBlock(new Vec2(x, y), 270)
+        )
+        break
+      case 'tn':
+        this.entities.addEntity(
+          new TranslateBlockNeo(new Vec2(x, y), 270)
         )
         break
     }
