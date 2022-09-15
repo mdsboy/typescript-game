@@ -12,11 +12,12 @@ export default class TranslateBlock implements Entity {
   private centerPos: Vec2
   private angle: number
   private color: Color
-  private speed = TranslateBlock.minSpeed
 
   private static minSpeed = 3
   private static maxSpeed = 6
   private static upSpeed = 0.05
+
+  private speed = TranslateBlock.minSpeed
 
   constructor(pos: Vec2, angle: number) {
     this.rect = new Rect(pos, TranslateBlock.size, TranslateBlock.size)

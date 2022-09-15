@@ -13,6 +13,7 @@ export default class Title implements SceneBase {
 
   public draw() {
     DrawManager.string(new Vec2(300, 300), "title", 300, Color.black)
+    DrawManager.string(new Vec2(350, 450), "push A", 100, Color.black)
   }
 
   public update(): SceneBase {
